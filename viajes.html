@@ -1,0 +1,1382 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eiro - Explorar Viajes</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Variables CSS - Reutilizadas de index.html */
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --accent-color: #f093fb;
+            --text-dark: #2d3748;
+            --text-light: #718096;
+            --white: #ffffff;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --gradient-background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        }
+
+        /* Reset y Base - Reutilizadas de index.html */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--gradient-background);
+            color: var(--text-dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Contenedores y Secciones */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        /* Header */
+        header {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1rem;
+        }
+
+        .logo {
+            color: var(--white);
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-decoration: none;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+
+        .logo:hover {
+            color: var(--accent-color);
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: color 0.3s ease, transform 0.2s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: var(--accent-color);
+            left: 0;
+            bottom: -5px;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-icons a {
+            color: var(--white);
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-icons a:hover {
+            color: var(--accent-color);
+        }
+
+        /* Hero Section (simplificada para viajes.html) */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://via.placeholder.com/1600x400/667eea/764ba2?text=Explora+Nuestras+Aventuras') no-repeat center center/cover;
+            color: var(--white);
+            text-align: center;
+            padding: 4rem 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+
+        /* Secciones de Carrusel de Viajes */
+        .travel-section {
+            padding: 3rem 0;
+            color: var(--white);
+        }
+
+        .travel-section h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 2.5rem;
+            color: var(--white);
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        }
+
+        .carousel-container {
+            position: relative;
+            margin: 0 1rem; /* Adjust margin for buttons */
+        }
+
+        .carousel {
+            display: flex;
+            overflow-x: scroll;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch; /* For smoother scrolling on iOS */
+            padding: 1rem 0;
+            gap: 2rem; /* Increased gap */
+            scrollbar-width: none; /* Hide scrollbar for Firefox */
+        }
+
+        .carousel::-webkit-scrollbar {
+            display: none; /* Hide scrollbar for Chrome, Safari, Opera */
+        }
+
+        .travel-card {
+            flex: 0 0 auto;
+            width: 320px; /* Slightly larger card width */
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            color: var(--text-dark); /* Ensure text is readable on glass background */
+        }
+
+        .travel-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 48px 0 rgba(31, 38, 135, 0.5);
+        }
+
+        /* Nuevas reglas para el efecto de video al hacer hover */
+        .media-container {
+            position: relative;
+            width: 100%;
+            height: 200px; /* Misma altura que la imagen original */
+            overflow: hidden; /* Asegura que el contenido se ajuste */
+        }
+
+        .media-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: opacity 0.3s ease; /* Suaviza la transición */
+            opacity: 1; /* Visible por defecto */
+        }
+
+        .media-container .hover-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0; /* Oculto por defecto */
+            transition: opacity 0.3s ease; /* Suaviza la transición */
+            pointer-events: none; /* Permite hacer click a través del video si es necesario */
+        }
+
+        .travel-card:hover .media-container img {
+            opacity: 0; /* Oculta la imagen al hacer hover */
+        }
+
+        .travel-card:hover .media-container .hover-video {
+            opacity: 1; /* Muestra el video al hacer hover */
+        }
+
+        .card-content {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .card-content h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.75rem;
+            color: var(--white);
+        }
+
+        .card-content p {
+            font-size: 1.2rem;
+            color:rgb(51, 50, 50);
+            margin-bottom: 1rem;
+            flex-grow: 1;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        .card-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+
+        .buy-button {
+            display: block;
+            width: 100%;
+            padding: 0.8rem 1.5rem;
+            background: var(--accent-color);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        .buy-button:hover {
+            background: #e07afa; /* Slightly darker accent */
+            transform: translateY(-2px);
+        }
+
+        .buy-button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+
+        .carousel-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            color: var(--white);
+            border: none;
+            border-radius: 50%;
+            width: 45px; /* Slightly larger buttons */
+            height: 45px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            transition: background 0.3s ease;
+        }
+
+        .carousel-button:hover {
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        .carousel-button:disabled {
+            background-color: rgba(0, 0, 0, 0.2);
+            color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .prev-button {
+            left: 0;
+        }
+
+        .next-button {
+            right: 0;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 2rem 1rem;
+            color: var(--white);
+            text-align: center;
+            border-top: 1px solid var(--glass-border);
+            margin-top: auto; /* Push footer to the bottom */
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-section {
+            flex: 1 1 200px;
+            min-width: 180px;
+        }
+
+        .footer-section h4 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+        }
+
+        .footer-section p, .footer-section a {
+            color: black;
+            text-decoration: none;
+            font-size: 0.95rem;
+            display: block;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: var(--white);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            color: var(--white);
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: var(--accent-color);
+        }
+
+        .footer-bottom {
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--glass-border);
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        /* Media Queries */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                gap: 0.8rem;
+                text-align: center;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .travel-section h2 {
+                font-size: 2rem;
+            }
+
+            .carousel-button {
+                width: 35px;
+                height: 35px;
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 1.5rem;
+            }
+
+            .nav-links a {
+                font-size: 0.9rem;
+            }
+
+            .nav-icons a {
+                font-size: 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 0.9rem;
+            }
+
+            .travel-card {
+                width: 280px;
+            }
+        }
+
+        /* Modal Styles (Duplicated from index.html for consistency) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1001; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
+            backdrop-filter: blur(5px); /* Blur effect */
+            -webkit-backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal-content {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            padding: 2.5rem;
+            text-align: center;
+            position: relative;
+            max-width: 450px;
+            width: 90%;
+            color: var(--white);
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .close-button {
+            color: var(--white);
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        .modal-content h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent-color);
+        }
+
+        .modal-form label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            text-align: left;
+        }
+
+        .modal-form input[type="text"],
+        .modal-form input[type="password"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 1rem;
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.15);
+            color: var(--white);
+            font-size: 1rem;
+        }
+        .modal-form input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .modal-form button {
+            display: block;
+            width: 100%;
+            padding: 0.8rem 1.5rem;
+            background: var(--accent-color);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+            margin-top: 1.5rem;
+        }
+
+        .modal-form button:hover {
+            background: #e07afa;
+            transform: translateY(-2px);
+        }
+
+        .toggle-modal-form {
+            margin-top: 1.5rem;
+            font-size: 0.95rem;
+            color: var(--text-light);
+        }
+
+        .toggle-modal-form a {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .toggle-modal-form a:hover {
+            color: var(--white);
+        }
+
+        .modal-message {
+            margin-top: 1rem;
+            padding: 0.8rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--white);
+            display: none; /* Hidden by default */
+        }
+
+        .modal-message.error {
+            background-color: #ff4d4d;
+        }
+
+        .modal-message.success {
+            background-color: #4CAF50;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <div class="navbar container">
+            <a href="index.html" class="logo">Eiro</a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="viajes.html">Explorar Viajes</a></li>
+                    <li><a href="index.html #ai-suggester">Eiro AI</a></li>
+                    <li><a href="index.html #popular-destinations">Ofertas</a></li>
+                    <li><a href="index.html #contact">Contacto</a></li>
+                </ul>
+            </nav>
+            <div class="nav-icons">
+                <a href="#"><i class="fas fa-search"></i></a>
+                <a href="#" id="cart-icon"><i class="fas fa-shopping-cart"></i></a>
+                <a href="#" id="user-icon"><i class="fas fa-user-circle"></i></a>
+                <a href="#" id="logout-button" style="display:none; color: #ff6347;"><i class="fas fa-sign-out-alt"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1>Explora Nuestras Aventuras Únicas</h1>
+            <p>Descubre destinos increíbles y vive experiencias inolvidables con Eiro. Tu próxima aventura te espera.</p>
+        </section>
+
+        <section class="travel-section">
+            <div class="container">
+                <h2>Nuestras Destacadas</h2>
+                <div class="carousel-container">
+                    <button class="carousel-button prev-button" data-carousel-id="featured-carousel"><i class="fas fa-chevron-left"></i></button>
+                    <div class="carousel" id="featured-carousel">
+                        </div>
+                    <button class="carousel-button next-button" data-carousel-id="featured-carousel"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </section>
+
+        <section class="travel-section" style="padding-top: 0;">
+            <div class="container">
+                <h2>Escapadas de Fin de Semana</h2>
+                <div class="carousel-container">
+                    <button class="carousel-button prev-button" data-carousel-id="weekend-carousel"><i class="fas fa-chevron-left"></i></button>
+                    <div class="carousel" id="weekend-carousel">
+                        </div>
+                    <button class="carousel-button next-button" data-carousel-id="weekend-carousel"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </section>
+
+        <section class="travel-section" style="padding-top: 0;">
+            <div class="container">
+                <h2>Aventuras en la Naturaleza</h2>
+                <div class="carousel-container">
+                    <button class="carousel-button prev-button" data-carousel-id="nature-carousel"><i class="fas fa-chevron-left"></i></button>
+                    <div class="carousel" id="nature-carousel">
+                        </div>
+                    <button class="carousel-button next-button" data-carousel-id="nature-carousel"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Eiro</h4>
+                    <p>Tu compañero de aventuras para descubrir el mundo.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Enlaces Rápidos</h4>
+                    <a href="index.html">Inicio</a>
+                    <a href="viajes.html">Explorar Viajes</a>
+                    <a href="#">Política de Privacidad</a>
+                    <a href="#">Términos de Servicio</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Contáctanos</h4>
+                    <p>Email: info@eiroviajes.com</p>
+                    <p>Teléfono: +123 456 7890</p>
+                    <p>Dirección: Calle Ficticia 123, Ciudad, País</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Síguenos</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2025 Eiro. Todos los derechos reservados.
+            </div>
+        </div>
+    </footer>
+
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2 id="modal-auth-title">Iniciar Sesión</h2>
+
+            <form id="modal-login-form" class="modal-form">
+                <label for="modal-login-username">Usuario</label>
+                <input type="text" id="modal-login-username" placeholder="Tu nombre de usuario" required>
+
+                <label for="modal-login-password">Contraseña</label>
+                <input type="password" id="modal-login-password" placeholder="Tu contraseña" required>
+
+                <button type="submit">Iniciar Sesión</button>
+            </form>
+
+            <form id="modal-register-form" class="modal-form" style="display:none;">
+                <label for="modal-register-username">Usuario</label>
+                <input type="text" id="modal-register-username" placeholder="Crea un nombre de usuario" required>
+
+                <label for="modal-register-password">Contraseña</label>
+                <input type="password" id="modal-register-password" placeholder="Crea una contraseña" required>
+
+                <label for="modal-confirm-password">Confirmar Contraseña</label>
+                <input type="password" id="modal-confirm-password" placeholder="Repite la contraseña" required>
+
+                <button type="submit">Registrarse</button>
+            </form>
+
+            <p class="toggle-modal-form">
+                ¿No tienes cuenta? <a href="#" id="show-modal-register">Regístrate aquí</a>
+            </p>
+            <p class="toggle-modal-form" style="display:none;">
+                ¿Ya tienes cuenta? <a href="#" id="show-modal-login">Inicia Sesión aquí</a>
+            </p>
+            <div id="modal-message" class="modal-message"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const travelProducts = [
+                // Destacadas (Featured) - at least 10
+                {
+                    id: '1',
+                    name: 'Aventura en los Andes',
+                    image: 'imagenes/andes.jpeg', // <--- Reemplaza esta URL con la ruta a tu imagen para este destino.
+                    video: 'imagenes/andes.mp4', // <--- Reemplaza esta ruta con la ruta a tu video descargado para este destino (ej: 'videos/andes-aventura.mp4').
+                    description: 'Explora las majestuosas montañas de los Andes. Senderismo, vistas panorámicas y cultura local.',
+                    price: 1200,
+                    category: 'featured'
+                },
+                {
+                    id: '2',
+                    name: 'Relax en el Caribe',
+                    image: 'imagenes/caribe.webp', // <--- Reemplaza esta URL con la ruta a tu imagen para este destino.
+                    video: 'imagenes/caribe.mp4', // <--- Reemplaza esta ruta con la ruta a tu video descargado para este destino (ej: 'videos/caribe-playa.mp4').
+                    description: 'Playas de arena blanca, aguas cristalinas y un ambiente relajado te esperan en el Caribe.',
+                    price: 950,
+                    category: 'featured'
+                },
+                {
+                    id: '3',
+                    name: 'Safari Africano',
+                    image: 'imagenes/safari.jpg', // <--- Reemplaza esta URL con la ruta a tu imagen para este destino.
+                    video: "imagenes/safari.mp4", // <--- Reemplaza esta ruta con la ruta a tu video descargado para este destino.
+                    description: 'Vive una experiencia inolvidable en un safari por la sabana africana, avistando vida salvaje.',
+                    price: 2500,
+                    category: 'featured'
+                },
+                {
+                    id: '4',
+                    name: 'Caminata por la Patagonia',
+                    image: 'imagenes/patagonia.jpg', // <--- Reemplaza esta URL con la ruta a tu imagen para este destino.
+                    video: 'imagenes/patagonia.mp4', // <--- Reemplaza esta ruta con la ruta a tu video descargado para este destino.
+                    description: 'Descubre los paisajes impresionantes de la Patagonia, glaciares y montañas.',
+                    price: 1800,
+                    category: 'featured'
+                },
+                {
+                    id: '5',
+                    name: 'Explora Tokio Moderno',
+                    image: 'imagenes/tokio.webp', // <--- Reemplaza esta URL con la ruta a tu imagen para este destino.
+                    video: 'imagenes/tokyo.mp4', // <--- Reemplaza esta ruta con la ruta a tu video descargado para este destino.
+                    description: 'Sumérgete en la vibrante metrópolis de Tokio, tecnología y cultura.',
+                    price: 1600,
+                    category: 'featured'
+                },
+                {
+                    id: '6',
+                    name: 'Crucero por Fiordos Noruegos',
+                    image: 'imagenes/noruega.jpg', // <--- Reemplaza esta URL con la ruta a tu imagen para este destino.
+                    video: 'imagenes/niordo.mp4', // <--- Reemplaza esta ruta con la ruta a tu video descargado para este destino.
+                    description: 'Navega entre majestuosos fiordos, cascadas y pueblos pintorescos.',
+                    price: 2100,
+                    category: 'featured'
+                },
+                {
+                    id: '7',
+                    name: 'Trekking en el Himalaya',
+                    image: 'imagenes/himalaya.jpg', // <--- Reemplaza esta URL con la ruta a tu imagen para este destino.
+                    video: 'imagenes/himalaya.mp4', // <--- Reemplaza esta ruta con la ruta a tu video descargado para este destino.
+                    description: 'Desafía las alturas y la espiritualidad del Himalaya en una aventura única.',
+                    price: 3000,
+                    category: 'featured'
+                },
+                {
+                    id: '8',
+                    name: 'Ruta Histórica por Egipto',
+                    image: 'https://via.placeholder.com/320x200/718096/667eea?text=Egipto', // <--- Reemplaza esta URL con la ruta a tu imagen para este destino.
+                    video: 'videos/egipto-video.mp4', // <--- Reemplaza esta ruta con la ruta a tu video descargado para este destino.
+                    description: 'Descubre los secretos de las pirámides y los templos del antiguo Egipto.',
+                    price: 1900,
+                    category: 'featured'
+                },
+                {
+                    id: '9',
+                    name: 'Playas Secretas de Tailandia',
+                    image: 'https://via.placeholder.com/320x200/2d3748/764ba2?text=Tailandia', // <--- Reemplaza esta URL con la ruta a tu imagen para este destino.
+                    video: 'videos/tailandia-video.mp4', // <--- Reemplaza esta ruta con la ruta a tu video descargado para este destino.
+                    description: 'Relájate en las paradisíacas playas escondidas y disfruta de la cultura tailandesa.',
+                    price: 1100,
+                    category: 'featured'
+                },
+                {
+                    id: '10',
+                    name: 'Viñedos de la Toscana',
+                    image: 'https://via.placeholder.com/320x200/667eea/2d3748?text=Toscana', // <--- Reemplaza esta URL con la ruta a tu imagen para este destino.
+                    video: 'videos/toscana-video.mp4', // <--- Reemplaza esta ruta con la ruta a tu video descargado para este destino.
+                    description: 'Un viaje sensorial a través de los paisajes vinícolas y la gastronomía de la Toscana.',
+                    price: 1400,
+                    category: 'featured'
+                },
+                {
+                    id: '11',
+                    name: 'Glaciares de Islandia',
+                    image: 'https://via.placeholder.com/320x200/764ba2/718096?text=Islandia', // <--- Reemplaza esta URL con la ruta a tu imagen para este destino.
+                    video: 'videos/islandia-video.mp4', // <--- Reemplaza esta ruta con la ruta a tu video descargado para este destino.
+                    description: 'Explora paisajes volcánicos, glaciares y auroras boreales en Islandia.',
+                    price: 2200,
+                    category: 'featured'
+                },
+
+
+                // Escapadas de Fin de Semana (Weekend Getaways) - at least 10
+                {
+                    id: '12',
+                    name: 'Fin de Semana en Roma',
+                    image: 'https://via.placeholder.com/320x200/667eea/f093fb?text=Roma', // <--- Reemplaza esta URL con la ruta a tu imagen para este destino.
+                    video: 'videos/roma-video.mp4', // <--- Reemplaza esta ruta con la ruta a tu video descargado para este destino.
+                    description: 'Descubre la historia y la gastronomía de la Ciudad Eterna en una breve escapada.',
+                    price: 750,
+                    category: 'weekend'
+                },
+                {
+                    id: '13',
+                    name: 'Paseo por Venecia',
+                    image: 'https://via.placeholder.com/320x200/764ba2/f093fb?text=Venecia', // <--- Reemplaza esta URL con la ruta a tu imagen para este destino.
+                    video: 'videos/venecia-video.mp4', // <--- Reemplaza esta ruta con la ruta a tu video descargado para este destino.
+                    description: 'Disfruta de un romántico fin de semana en los canales y puentes de Venecia.',
+                    price: 820,
+                    category: 'weekend'
+                },
+                {
+                    id: '14',
+                    name: 'Cultura en Praga',
+                    image: 'https://via.placeholder.com/320x200/f093fb/667eea?text=Praga', // <--- Reemplaza esta URL con la ruta a tu imagen para este destino.
+                    video: 'videos/praga-video.mp4', // <--- Reemplaza esta ruta con la ruta a tu video descargado para este destino.
+                    description: 'Explora la arquitectura gótica y el encanto bohemio de Praga.',
+                    price: 680,
+                    category: 'weekend'
+                },
+                {
+                    id: '15',
+                    name: 'Relax en la Costa Brava',
+                    image: 'https://via.placeholder.com/320x200/667eea/718096?text=Costa+Brava', // <--- Reemplaza esta URL con la ruta a tu imagen para este destino.
+                    video: 'videos/costabrava-video.mp4', // <--- Reemplaza esta ruta con la ruta a tu video descargado para este destino.
+                    description: 'Un fin de semana de sol, playa y deliciosa comida mediterránea.',
+                    price: 550,
+                    category: 'weekend'
+                },
+                {
+                    id: '16',
+                    name: 'Aventura en los Pirineos',
+                    image: 'https://via.placeholder.com/320x200/764ba2/2d3748?text=Pirineos', // <--- Reemplaza esta URL con la ruta a tu imagen para este destino.
+                    video: 'videos/pirineos-video.mp4', // <--- Reemplaza esta ruta con la ruta a tu video descargado para este destino.
+                    description: 'Senderismo y aire puro en las montañas de los Pirineos.',
+                    price: 490,
+                    category: 'weekend'
+                },
+                {
+                    id: '17',
+                    name: 'París para Enamorados',
+                    image: 'https://via.placeholder.com/320x200/f093fb/764ba2?text=París', // <--- Reemplaza esta URL con la ruta a tu imagen para este destino.
+                    video: 'videos/paris-video.mp4', // <--- Reemplaza esta ruta con la ruta a tu video descargado para este destino.
+                    description: 'La ciudad del amor te espera para una escapada inolvidable.',
+                    price: 980,
+                    category: 'weekend'
+                },
+                {
+                    id: '18',
+                    name: 'Lisboa Encantadora',
+                    image: 'https://via.placeholder.com/320x200/667eea/f093fb?text=Lisboa', // <--- Reemplaza esta URL con la ruta a tu imagen para este destino.
+                    video: 'videos/lisboa-video.mp4', // <--- Reemplaza esta ruta con la ruta a tu video descargado para este destino.
+                    description: 'Descubre los barrios históricos y el fado de la capital portuguesa.',
+                    price: 600,
+                    category: 'weekend'
+                },
+                {
+                    id: '19',
+                    name: 'Mercados de Marrakech',
+                    image: 'https://via.placeholder.com/320x200/718096/667eea?text=Marrakech', // <--- Reemplaza esta URL con la ruta a tu imagen para este destino.
+                    video: 'videos/marrakech-video.mp4', // <--- Reemplaza esta ruta con la ruta a tu video descargado para este destino.
+                    description: 'Sumérgete en la atmósfera vibrante de los zocos y la cultura de Marrakech.',
+                    price: 720,
+                    category: 'weekend'
+                },
+                {
+                    id: '20',
+                    name: 'Bruselas y Chocolate',
+                    image: 'https://via.placeholder.com/320x200/2d3748/764ba2?text=Bruselas', // <--- Reemplaza esta URL con la ruta a tu imagen para este destino.
+                    video: 'videos/bruselas-video.mp4', // <--- Reemplaza esta ruta con la ruta a tu video descargado para este destino.
+                    description: 'Un dulce fin de semana explorando la capital europea y su gastronomía.',
+                    price: 650,
+                    category: 'weekend'
+                },
+                {
+                    id: '21',
+                    name: 'Berlín Histórico',
+                    image: 'https://via.placeholder.com/320x200/667eea/2d3748?text=Berlín', // <--- Reemplaza esta URL con la ruta a tu imagen para este destino.
+                    video: 'videos/berlin-video.mp4', // <--- Reemplaza esta ruta con la ruta a tu video descargado para este destino.
+                    description: 'Un viaje a través de la rica historia y la moderna escena cultural de Berlín.',
+                    price: 700,
+                    category: 'weekend'
+                },
+                {
+                    id: '22',
+                    name: 'Ámsterdam en Bicicleta',
+                    image: 'https://via.placeholder.com/320x200/764ba2/718096?text=Ámsterdam', // <--- Reemplaza esta URL con la ruta a tu imagen para este destino.
+                    video: 'videos/amsterdam-video.mp4', // <--- Reemplaza esta ruta con la ruta a tu video descargado para este destino.
+                    description: 'Explora los canales y museos de Ámsterdam de una forma única.',
+                    price: 780,
+                    category: 'weekend'
+                },
+
+
+                // Aventuras en la Naturaleza (Nature Adventures) - at least 10
+                {
+                    id: '23',
+                    name: 'Aventura en la Selva Amazónica',
+                    image: 'https://via.placeholder.com/320x200/f093fb/764ba2?text=Amazonas', // <--- Reemplaza esta URL con la ruta a tu imagen para este destino.
+                    video: 'videos/amazonas-video.mp4', // <--- Reemplaza esta ruta con la ruta a tu video descargado para este destino.
+                    description: 'Explora la biodiversidad de la selva amazónica en una expedición inolvidable.',
+                    price: 1350,
+                    category: 'nature'
+                },
+                {
+                    id: '24',
+                    name: 'Buceo en la Gran Barrera',
+                    image: 'https://via.placeholder.com/320x200/718096/667eea?text=Gran+Barrera', // <--- Reemplaza esta URL con la ruta a tu imagen para este destino.
+                    video: 'videos/granbarrera-video.mp4', // <--- Reemplaza esta ruta con la ruta a tu video descargado para este destino.
+                    description: 'Explora los vibrantes arrecifes de coral de la Gran Barrera de Coral en Australia.',
+                    price: 2100,
+                    category: 'nature'
+                },
+                {
+                    id: '25',
+                    name: 'Senderismo en Yosemite',
+                    image: 'https://via.placeholder.com/320x200/2d3748/764ba2?text=Yosemite', // <--- Reemplaza esta URL con la ruta a tu imagen para este destino.
+                    video: 'videos/yosemite-video.mp4', // <--- Reemplaza esta ruta con la ruta a tu video descargado para este destino.
+                    description: 'Descubre las sequoias gigantes y las impresionantes cascadas de Yosemite.',
+                    price: 1050,
+                    category: 'nature'
+                },
+                {
+                    id: '26',
+                    name: 'Rafting en los Alpes',
+                    image: 'https://via.placeholder.com/320x200/667eea/2d3748?text=Rafting+Alpes', // <--- Reemplaza esta URL con la ruta a tu imagen para este destino.
+                    video: 'videos/alpes-video.mp4', // <--- Reemplaza esta ruta con la ruta a tu video descargado para este destino.
+                    description: 'Adrenalina pura navegando los ríos de montaña de los Alpes.',
+                    price: 900,
+                    category: 'nature'
+                },
+                {
+                    id: '27',
+                    name: 'Safari en Kruger',
+                    image: 'https://via.placeholder.com/320x200/764ba2/718096?text=Kruger', // <--- Reemplaza esta URL con la ruta a tu imagen para este destino.
+                    video: 'videos/kruger-video.mp4', // <--- Reemplaza esta ruta con la ruta a tu video descargado para este destino.
+                    description: 'Observa la vida salvaje en su hábitat natural en el Parque Nacional Kruger.',
+                    price: 2400,
+                    category: 'nature'
+                },
+                {
+                    id: '28',
+                    name: 'Exploración del Sahara',
+                    image: 'https://via.placeholder.com/320x200/f093fb/667eea?text=Sahara', // <--- Reemplaza esta URL con la ruta a tu imagen para este destino.
+                    video: 'videos/sahara-video.mp4', // <--- Reemplaza esta ruta con la ruta a tu video descargado para este destino.
+                    description: 'Una aventura única a través de las dunas y oasis del desierto del Sahara.',
+                    price: 1700,
+                    category: 'nature'
+                },
+                {
+                    id: '29',
+                    name: 'Patagonia Austral',
+                    image: 'https://via.placeholder.com/320x200/667eea/f093fb?text=Patagonia+Austral', // <--- Reemplaza esta URL con la ruta a tu imagen para este destino.
+                    video: 'videos/patagonia-austral-video.mp4', // <--- Reemplaza esta ruta con la ruta a tu video descargado para este destino.
+                    description: 'Vive la inmensidad de la Patagonia con glaciares y montañas imponentes.',
+                    price: 1950,
+                    category: 'nature'
+                },
+                {
+                    id: '30',
+                    name: 'Cuevas de Postojna',
+                    image: 'https://via.placeholder.com/320x200/718096/667eea?text=Postojna', // <--- Reemplaza esta URL con la ruta a tu imagen para este destino.
+                    video: 'videos/postojna-video.mp4', // <--- Reemplaza esta ruta con la ruta a tu video descargado para este destino.
+                    description: 'Descubre las maravillas subterráneas de las famosas cuevas de Eslovenia.',
+                    price: 800,
+                    category: 'nature'
+                },
+                {
+                    id: '31',
+                    name: 'Volcanes de Hawái',
+                    image: 'https://via.placeholder.com/320x200/2d3748/764ba2?text=Hawái', // <--- Reemplaza esta URL con la ruta a tu imagen para este destino.
+                    video: 'videos/hawaii-video.mp4', // <--- Reemplaza esta ruta con la ruta a tu video descargado para este destino.
+                    description: 'Explora la actividad volcánica y la exuberante naturaleza de Hawái.',
+                    price: 1500,
+                    category: 'nature'
+                },
+                {
+                    id: '32',
+                    name: 'Bosques de la Selva Negra',
+                    image: 'https://via.placeholder.com/320x200/667eea/2d3748?text=Selva+Negra', // <--- Reemplaza esta URL con la ruta a tu imagen para este destino.
+                    video: 'videos/selvanegra-video.mp4', // <--- Reemplaza esta ruta con la ruta a tu video descargado para este destino.
+                    description: 'Paseos encantadores por los densos bosques y pueblos pintorescos de Alemania.',
+                    price: 900,
+                    category: 'nature'
+                },
+                {
+                    id: '33',
+                    name: 'Parque Nacional Banff',
+                    image: 'https://via.placeholder.com/320x200/764ba2/718096?text=Banff', // <--- Reemplaza esta URL con la ruta a tu imagen para este destino.
+                    video: 'videos/banff-video.mp4', // <--- Reemplaza esta ruta con la ruta a tu video descargado para este destino.
+                    description: 'Montañas rocosas, lagos turquesa y vida salvaje en el corazón de Canadá.',
+                    price: 1750,
+                    category: 'nature'
+                }
+            ];
+
+            function createTravelCard(product) {
+                const card = document.createElement('div');
+                card.classList.add('travel-card');
+                card.innerHTML = `
+                    <div class="media-container">
+                        <img src="${product.image}" alt="${product.name}">
+                        <video class="hover-video" src="${product.video}" loop muted playsinline preload="auto"></video>
+                    </div>
+                    <div class="card-content">
+                        <h3>${product.name}</h3>
+                        <p>${product.description}</p>
+                        <div class="card-price">$${product.price.toLocaleString()}</div>
+                        <button class="buy-button"
+                                data-product-id="${product.id}"
+                                data-product-name="${encodeURIComponent(product.name)}"
+                                data-product-price="${product.price}"
+                                data-product-image="${encodeURIComponent(product.image)}">Comprar</button>
+                    </div>
+                `;
+                return card;
+            }
+
+            function loadTravels() {
+                const carousels = {
+                    'featured-carousel': travelProducts.filter(p => p.category === 'featured'),
+                    'weekend-carousel': travelProducts.filter(p => p.category === 'weekend'),
+                    'nature-carousel': travelProducts.filter(p => p.category === 'nature')
+                };
+
+                for (const carouselId in carousels) {
+                    const carouselElement = document.getElementById(carouselId);
+                    const productsInCategory = carousels[carouselId];
+
+                    if (productsInCategory.length > 0) {
+                        productsInCategory.forEach(product => {
+                            carouselElement.appendChild(createTravelCard(product));
+                        });
+                    } else {
+                        carouselElement.innerHTML = '<p style="color:var(--text-light); text-align:center; width:100%;">No hay viajes en esta categoría disponibles.</p>';
+                    }
+                }
+
+                setupCarousels(); // Initialize carousel navigation buttons after content is loaded
+            }
+
+            function setupCarousels() {
+                const scrollAmount = 350; // Adjust based on card width + gap (e.g., 320px card + 2rem gap = ~352px)
+
+                document.querySelectorAll('.carousel-container').forEach(container => {
+                    const carousel = container.querySelector('.carousel');
+                    const nextButton = container.querySelector('.next-button');
+                    const prevButton = container.querySelector('.prev-button');
+
+                    if (!carousel || !nextButton || !prevButton) return; // Skip if elements not found
+
+                    nextButton.addEventListener('click', () => {
+                        carousel.scrollBy({
+                            left: scrollAmount,
+                            behavior: 'smooth'
+                        });
+                    });
+
+                    prevButton.addEventListener('click', () => {
+                        carousel.scrollBy({
+                            left: -scrollAmount,
+                            behavior: 'smooth'
+                        });
+                    });
+
+                    const updateButtonStates = () => {
+                        // Check if scrollWidth is greater than clientWidth (i.e., if content is scrollable)
+                        const isScrollable = carousel.scrollWidth > carousel.clientWidth;
+
+                        // Only enable buttons if content is actually scrollable
+                        if (isScrollable) {
+                            const isAtEnd = carousel.scrollLeft + carousel.clientWidth >= carousel.scrollWidth - 1; // -1 for minor floating point inaccuracies
+                            const isAtBeginning = carousel.scrollLeft <= 0;
+
+                            nextButton.disabled = isAtEnd;
+                            prevButton.disabled = isAtBeginning;
+                        } else {
+                            // If not scrollable, disable both buttons
+                            nextButton.disabled = true;
+                            prevButton.disabled = true;
+                        }
+                    };
+
+                    carousel.addEventListener('scroll', updateButtonStates);
+                    // Initial check and also update on window resize in case carousel dimensions change
+                    window.addEventListener('resize', updateButtonStates);
+                    // Ensure initial state is set after content load
+                    setTimeout(updateButtonStates, 100); // Small delay to ensure content renders before calculating scrollWidth
+                });
+            }
+
+            loadTravels(); // Load travels and set up carousels when the page loads
+
+            // --- Lógica para el efecto de video al pasar el ratón ---
+            document.querySelectorAll('.travel-card').forEach(card => {
+                const video = card.querySelector('.hover-video');
+                if (video) { // Asegurarse de que hay un video en la tarjeta
+                    card.addEventListener('mouseenter', () => {
+                        video.play();
+                    });
+
+                    card.addEventListener('mouseleave', () => {
+                        video.pause();
+                        video.currentTime = 0; // Reinicia el video al principio al quitar el ratón
+                    });
+                }
+            });
+
+            // --- Modal Logic (Duplicated from index.html for consistency) ---
+            const authModal = document.getElementById('authModal');
+            const closeButton = document.querySelector('.close-button');
+            const cartIcon = document.getElementById('cart-icon');
+            const userIcon = document.getElementById('user-icon');
+            const logoutButton = document.getElementById('logout-button');
+
+            const modalLoginForm = document.getElementById('modal-login-form');
+            const modalRegisterForm = document.getElementById('modal-register-form');
+            const modalAuthTitle = document.getElementById('modal-auth-title');
+            const showModalRegisterLink = document.getElementById('show-modal-register');
+            const showModalLoginLink = document.getElementById('show-modal-login');
+            const modalMessageDiv = document.getElementById('modal-message');
+
+            let pendingAction = null; // Can be 'cart', 'user_profile', 'buy_product'
+
+            const openAuthModal = (action, productDetails = null) => {
+                authModal.style.display = 'flex';
+                pendingAction = action;
+                if (productDetails) {
+                    localStorage.setItem('pendingProduct', JSON.stringify(productDetails));
+                } else {
+                    localStorage.removeItem('pendingProduct');
+                }
+                updateAuthUI(); // Ensure correct form is shown
+            };
+
+            const closeAuthModal = () => {
+                authModal.style.display = 'none';
+                pendingAction = null;
+                modalMessageDiv.style.display = 'none';
+                localStorage.removeItem('pendingProduct');
+            };
+
+            closeButton.addEventListener('click', closeAuthModal);
+            window.addEventListener('click', (event) => {
+                if (event.target == authModal) {
+                    closeAuthModal();
+                }
+            });
+
+            const updateAuthUI = () => {
+                const loggedInUser = localStorage.getItem('loggedInUser');
+                if (loggedInUser) {
+                    userIcon.style.display = 'none';
+                    logoutButton.style.display = 'inline-block';
+                } else {
+                    userIcon.style.display = 'inline-block';
+                    logoutButton.style.display = 'none';
+                }
+            };
+
+            const showModalMessage = (msg, type) => {
+                modalMessageDiv.textContent = msg;
+                modalMessageDiv.className = `modal-message ${type}`;
+                modalMessageDiv.style.display = 'block';
+            };
+
+            const toggleModalForm = (showLogin) => {
+                if (showLogin) {
+                    modalLoginForm.style.display = 'block';
+                    modalRegisterForm.style.display = 'none';
+                    modalAuthTitle.textContent = 'Iniciar Sesión';
+                    showModalRegisterLink.parentNode.style.display = 'block';
+                    showModalLoginLink.parentNode.style.display = 'none';
+                } else {
+                    modalLoginForm.style.display = 'none';
+                    modalRegisterForm.style.display = 'block';
+                    modalAuthTitle.textContent = 'Registrarse';
+                    showModalRegisterLink.parentNode.style.display = 'none';
+                    showModalLoginLink.parentNode.style.display = 'block';
+                }
+                modalMessageDiv.style.display = 'none';
+            };
+
+            showModalRegisterLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                toggleModalForm(false);
+            });
+
+            showModalLoginLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                toggleModalForm(true);
+            });
+
+            modalLoginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const username = document.getElementById('modal-login-username').value;
+                const password = document.getElementById('modal-login-password').value;
+
+                const users = JSON.parse(localStorage.getItem('users')) || [];
+                const user = users.find(u => u.username === username && u.password === password);
+
+                if (user) {
+                    localStorage.setItem('loggedInUser', username);
+                    showModalMessage('Inicio de sesión exitoso. Redirigiendo...', 'success');
+                    closeAuthModal();
+
+                    setTimeout(() => {
+                        handlePendingAction();
+                    }, 500);
+
+                } else {
+                    showModalMessage('Usuario o contraseña incorrectos.', 'error');
+                }
+            });
+
+            modalRegisterForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const username = document.getElementById('modal-register-username').value;
+                const password = document.getElementById('modal-register-password').value;
+                const confirmPassword = document.getElementById('modal-confirm-password').value;
+
+                if (password !== confirmPassword) {
+                    showModalMessage('Las contraseñas no coinciden.', 'error');
+                    return;
+                }
+
+                const users = JSON.parse(localStorage.getItem('users')) || [];
+                if (users.some(u => u.username === username)) {
+                    showModalMessage('El nombre de usuario ya existe.', 'error');
+                    return;
+                }
+
+                users.push({ username, password });
+                localStorage.setItem('users', JSON.stringify(users));
+                localStorage.setItem('loggedInUser', username);
+                showModalMessage('Registro exitoso. Iniciando sesión y redirigiendo...', 'success');
+                closeAuthModal();
+
+                setTimeout(() => {
+                    handlePendingAction();
+                }, 500);
+            });
+
+            cartIcon.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (!localStorage.getItem('loggedInUser')) {
+                    openAuthModal('cart');
+                } else {
+                    alert('Navegando a tu carrito de compras (funcionalidad pendiente).');
+                }
+            });
+
+            userIcon.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (!localStorage.getItem('loggedInUser')) {
+                    openAuthModal('user_profile');
+                } else {
+                    alert('Navegando a tu perfil de usuario (funcionalidad pendiente).');
+                }
+            });
+
+            logoutButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                localStorage.removeItem('loggedInUser');
+                alert('Sesión cerrada correctamente.');
+                updateAuthUI();
+            });
+
+            const handlePendingAction = () => {
+                if (pendingAction === 'buy_product') {
+                    const pendingProduct = JSON.parse(localStorage.getItem('pendingProduct'));
+                    if (pendingProduct) {
+                        const params = new URLSearchParams();
+                        params.append('id', pendingProduct.id);
+                        params.append('name', pendingProduct.name);
+                        params.append('price', pendingProduct.price);
+                        params.append('image', pendingProduct.image);
+                        window.location.href = `pasarela_pago.html?${params.toString()}`;
+                    }
+                } else if (pendingAction === 'cart') {
+                    alert('Navegando a tu carrito de compras (funcionalidad pendiente).');
+                } else if (pendingAction === 'user_profile') {
+                    alert('Navegando a tu perfil de usuario (funcionalidad pendiente).');
+                }
+                localStorage.removeItem('pendingProduct');
+                pendingAction = null;
+            };
+
+            // Add listeners to all buy buttons
+            document.querySelectorAll('.buy-button').forEach(button => {
+                button.addEventListener('click', (event) => {
+                    const productId = event.target.dataset.productId;
+                    const productName = decodeURIComponent(event.target.dataset.productName);
+                    const productPrice = parseFloat(event.target.dataset.productPrice);
+                    const productImage = decodeURIComponent(event.target.dataset.productImage);
+
+                    const productDetails = { id: productId, name: productName, price: productPrice, image: productImage };
+
+                    if (!localStorage.getItem('loggedInUser')) {
+                        openAuthModal('buy_product', productDetails);
+                    } else {
+                        // Already logged in, proceed to payment gateway
+                        const params = new URLSearchParams();
+                        params.append('id', productDetails.id);
+                        params.append('name', productDetails.name);
+                        params.append('price', productDetails.price);
+                        params.append('image', productDetails.image);
+                        window.location.href = `pasarela_pago.html?${params.toString()}`;
+                    }
+                });
+            });
+
+            updateAuthUI(); // Initial UI update on page load
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eiro - Pasarela de Pago</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Variables CSS - Reutilizadas de index.html */
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --accent-color: #f093fb;
+            --text-dark: #2d3748;
+            --text-light: #718096;
+            --white: #ffffff;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --gradient-background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        }
+
+        /* Reset y Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: var(--gradient-background);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            width: 100%;
+        }
+
+        /* Header - Reutilizado de index.html */
+        header {
+            background-color: var(--white);
+            padding: 1rem 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-icons a, .nav-icons button {
+            color: var(--text-dark);
+            font-size: 1.2rem;
+            text-decoration: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .nav-icons a:hover, .nav-icons button:hover {
+            color: var(--primary-color);
+        }
+
+        .logout-button {
+            display: none; /* Hidden by default */
+            font-size: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            background-color: var(--accent-color);
+            color: var(--white);
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .logout-button:hover {
+            background-color: #d970e7; /* Slightly darker accent */
+        }
+
+        /* Payment Gateway Specific Styles */
+        .payment-section {
+            padding: 4rem 1rem;
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Align to top, not center vertically */
+        }
+
+        .payment-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            padding: 2.5rem;
+            width: 90%;
+            max-width: 600px;
+            color: var(--white);
+            text-align: center;
+        }
+
+        .payment-card h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: var(--white);
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        }
+
+        .product-summary {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .product-summary img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid var(--accent-color);
+        }
+
+        .product-details {
+            text-align: left;
+            flex-grow: 1;
+        }
+
+        .product-details h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--white);
+        }
+
+        .product-details p {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .payment-form {
+            text-align: left;
+        }
+
+        .payment-form label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--white);
+        }
+
+        .payment-form input[type="text"],
+        .payment-form input[type="email"],
+        .payment-form input[type="tel"],
+        .payment-form input[type="date"],
+        .payment-form input[type="number"],
+        .payment-form select {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.15);
+            color: var(--white);
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s ease, background-color 0.3s ease;
+        }
+
+        .payment-form input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .payment-form input:focus,
+        .payment-form select:focus {
+            border-color: var(--accent-color);
+            background-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .form-row {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-row > div {
+            flex: 1;
+        }
+
+        .form-row input {
+            margin-bottom: 0; /* Override individual input margin */
+        }
+
+        .pay-button {
+            width: 100%;
+            padding: 1rem;
+            background-color: var(--accent-color);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .pay-button:hover {
+            background-color: #d970e7;
+            transform: translateY(-2px);
+        }
+
+        /* Footer - Reutilizado de index.html */
+        footer {
+            background-color: var(--text-dark);
+            color: var(--white);
+            padding: 3rem 1rem;
+            text-align: center;
+            margin-top: auto; /* Pushes footer to the bottom */
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            text-align: left;
+            margin-bottom: 2rem;
+        }
+
+        .footer-column {
+            flex: 1;
+            min-width: 200px;
+            margin: 1rem;
+        }
+
+        .footer-column h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .footer-column p, .footer-column a {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-column a:hover {
+            color: var(--accent-color);
+        }
+
+        .social-icons a {
+            color: var(--white);
+            font-size: 1.5rem;
+            margin-right: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            color: var(--primary-color);
+        }
+
+        .copyright {
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                gap: 0.5rem;
+                align-items: center;
+            }
+
+            .payment-card {
+                padding: 1.5rem;
+            }
+
+            .payment-card h2 {
+                font-size: 2rem;
+            }
+
+            .product-summary {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar container">
+            <a href="index.html" class="logo">Eiro</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="viajes.html">Explorar Viajes</a></li>
+                <li><a href="#">Destinos</a></li>
+                <li><a href="#">Contacto</a></li>
+            </ul>
+            <div class="nav-icons">
+                <a href="#" id="cartIcon"><i class="fas fa-shopping-cart"></i></a>
+                <a href="#" id="userIcon"><i class="fas fa-user"></i></a>
+                <button class="logout-button" id="logoutButton">Cerrar Sesión</button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="payment-section container">
+            <div class="payment-card">
+                <h2>Finalizar tu Compra</h2>
+                
+                <div class="product-summary">
+                    <img id="productImage" src="" alt="Producto a comprar">
+                    <div class="product-details">
+                        <h3 id="productName"></h3>
+                        <p>Precio: <span id="productPrice"></span></p>
+                    </div>
+                </div>
+
+                <form id="paymentForm" class="payment-form">
+                    <h3>Detalles de Pago</h3>
+                    <label for="cardNumber">Número de Tarjeta</label>
+                    <input type="text" id="cardNumber" placeholder="xxxx xxxx xxxx xxxx" required maxlength="19">
+
+                    <div class="form-row">
+                        <div>
+                            <label for="expiryDate">Fecha de Vencimiento</label>
+                            <input type="text" id="expiryDate" placeholder="MM/AA" required maxlength="5">
+                        </div>
+                        <div>
+                            <label for="cvv">CVV</label>
+                            <input type="text" id="cvv" placeholder="123" required maxlength="4">
+                        </div>
+                    </div>
+
+                    <label for="cardHolderName">Nombre del Titular de la Tarjeta</label>
+                    <input type="text" id="cardHolderName" placeholder="Como aparece en la tarjeta" required>
+
+                    <label for="billingAddress">Dirección de Facturación</label>
+                    <input type="text" id="billingAddress" placeholder="Tu dirección completa" required>
+
+                    <button type="submit" class="pay-button">Pagar Ahora</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Eiro</h3>
+                    <p>Tu pasaporte a experiencias de viaje inolvidables y sostenibles alrededor del mundo.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Enlaces Rápidos</h3>
+                    <a href="index.html">Inicio</a>
+                    <a href="viajes.html">Explorar Viajes</a>
+                    <a href="#">Preguntas Frecuentes</a>
+                    <a href="#">Política de Privacidad</a>
+                </div>
+                <div class="footer-column">
+                    <h3>Contacto</h3>
+                    <p>Email: info@eirotravel.com</p>
+                    <p>Teléfono: +54 9 11 1234 5678</p>
+                    <p>Dirección: Calle Falsa 123, CABA, Argentina</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Síguenos</h3>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2024 Eiro. Todos los derechos reservados.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Header elements (for consistent UI)
+            const userIcon = document.getElementById('userIcon');
+            const logoutButton = document.getElementById('logoutButton');
+            const cartIcon = document.getElementById('cartIcon');
+
+            // Function to update UI based on login status
+            const updateAuthUI = () => {
+                const loggedInUser = localStorage.getItem('loggedInUser');
+                if (loggedInUser) {
+                    userIcon.style.display = 'none';
+                    logoutButton.style.display = 'inline-block';
+                } else {
+                    userIcon.style.display = 'inline-block';
+                    logoutButton.style.display = 'none';
+                }
+            };
+
+            // Logout functionality (consistent with other pages)
+            logoutButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                localStorage.removeItem('loggedInUser');
+                alert('Sesión cerrada correctamente. Redirigiendo a la página de inicio.');
+                window.location.href = 'index.html'; // Redirect to home after logout
+            });
+
+            // For cart/user icon clicks on pasarela_pago.html, simply alert or redirect if needed
+            cartIcon.addEventListener('click', (e) => {
+                e.preventDefault();
+                alert('Navegando a tu carrito de compras (funcionalidad pendiente).');
+                // Or: window.location.href = 'cart.html';
+            });
+
+            userIcon.addEventListener('click', (e) => {
+                e.preventDefault();
+                alert('Navegando a tu perfil de usuario (funcionalidad pendiente).');
+                // Or: window.location.href = 'profile.html';
+            });
+
+            // Parse URL parameters for product details
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = urlParams.get('id');
+            const productName = urlParams.get('name');
+            const productPrice = urlParams.get('price');
+            const productImage = urlParams.get('image');
+
+            if (productName && productPrice) {
+                document.getElementById('productName').textContent = productName;
+                document.getElementById('productPrice').textContent = `$${parseFloat(productPrice).toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                document.getElementById('productImage').src = productImage;
+            } else {
+                // Redirect if no product details are found
+                alert('No se encontraron detalles del producto. Redirigiendo a la página de viajes.');
+                window.location.href = 'viajes.html';
+            }
+
+            // Handle Payment Form Submission (Client-side simulation - INSECURE FOR PRODUCTION)
+            const paymentForm = document.getElementById('paymentForm');
+            paymentForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                // Get form data (for demonstration purposes)
+                const cardNumber = document.getElementById('cardNumber').value;
+                const expiryDate = document.getElementById('expiryDate').value;
+                const cvv = document.getElementById('cvv').value;
+                const cardHolderName = document.getElementById('cardHolderName').value;
+                const billingAddress = document.getElementById('billingAddress').value;
+
+                // Basic validation (you'd need more robust validation and likely a backend API)
+                if (!cardNumber || !expiryDate || !cvv || !cardHolderName || !billingAddress) {
+                    alert('Por favor, completa todos los campos del formulario de pago.');
+                    return;
+                }
+
+                // Simulate payment processing
+                alert(`Pago de $${productPrice} por "${productName}" procesado exitosamente. ¡Gracias por tu compra!`);
+
+                // In a real application, you would send this data to a payment gateway API
+                // and handle the response.
+
+                // After successful payment, clear product details from localStorage if they were stored there (though currently they're in URL params)
+                // And potentially redirect to a confirmation page
+                window.location.href = 'index.html'; // Redirect to home or a confirmation page
+            });
+
+            updateAuthUI(); // Initial UI update on page load
+        });
+    </script>
+</body>
+</html>

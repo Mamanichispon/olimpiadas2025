@@ -1,0 +1,2582 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eiro - Experiencias de Viaje Únicas</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Variables CSS */
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --accent-color: #f093fb;
+            --text-dark: #2d3748;
+            --text-light: #718096;
+            --white: #ffffff;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --gradient-background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        }
+
+        /* Reset y Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--gradient-background);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+
+        /* Contenedor principal */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+.container h2 {
+    font-size: 40px;
+} 
+
+        /* Header */
+        header {
+            background-color: var(--white);
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 0.5rem;
+            color: var(--secondary-color);
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+            text-decoration: underline;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .user-account {
+            display: none; /* Hidden by default, shown when logged in */
+        }
+
+        .user-account button {
+            background: none;
+            border: none;
+            font-size: 1rem;
+            color: var(--text-dark);
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .user-account button:hover {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+
+        /* Botones */
+        .btn-primary, .btn-secondary {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(118, 75, 162, 0.4);
+        }
+
+        .btn-secondary {
+            background-color: var(--white);
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--primary-color);
+            color: var(--white);
+            transform: translateY(-2px);
+        }
+
+        /* Secciones Hero */
+        .hero {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--white);
+            padding: 4rem 1rem;
+            position: relative; /* For background images/gradients */
+            overflow: hidden;
+        }
+
+        .hero-home {
+            /* Remove background image here as video will take its place */
+            background: none; /* Ensure no background image interferes */
+            color: var(--white);
+            min-height: 90vh;
+            position: relative;
+        }
+
+        /* Video Background Styling */
+        .video-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0; /* Place video behind overlay and content */
+        }
+
+        /* Overlay for video background */
+        .hero-home::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4); /* Overlay for readability */
+            z-index: 1; /* Place overlay above video, but below content */
+        }
+
+        .hero .container {
+            z-index: 2; /* Ensure content is above overlay and video */
+            position: relative; /* Necessary for z-index to work correctly relative to siblings */
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            font-weight: 800;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 0.9;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            text-align: center;
+        }
+        .section-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: var(--text-light);
+            text-align: center;
+        }
+
+        /* Products Section */
+        #products {
+            background-color: var(--white); /* White background for product listing */
+            color: var(--text-dark);
+            padding: 4rem 1rem;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .product-card {
+            background-color: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #e2e8f0;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .product-card h3 {
+            font-size: 1.5rem;
+            margin: 1.5rem 1.5rem 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .product-category {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin: 0 1.5rem 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .product-description {
+            font-size: 1rem;
+            color: var(--text-dark);
+            margin: 0 1.5rem 1.5rem;
+            flex-grow: 1; /* Allow description to take available space */
+        }
+
+        .product-details {
+            display: flex;
+            justify-content: space-around;
+            padding: 1rem 1.5rem;
+            border-top: 1px solid #e2e8f0;
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        .product-details span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .product-details span i {
+            color: var(--secondary-color);
+        }
+
+        .product-price {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--secondary-color);
+            padding: 0.5rem 1.5rem;
+            text-align: right;
+        }
+
+        .product-card button {
+            width: calc(100% - 3rem); /* Full width minus padding */
+            margin: 0 1.5rem 1.5rem;
+            padding: 1rem;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(118, 75, 162, 0.2);
+        }
+        .product-card button:hover {
+             box-shadow: 0 6px 15px rgba(118, 75, 162, 0.3);
+        }
+
+        /* AI Suggester */
+        #ai-suggester {
+            background: linear-gradient(135deg, var(--accent-color) 0%, var(--primary-color) 100%);
+            color: var(--white);
+        }
+
+        #ai-suggester .container {
+            padding: 3rem 1rem;
+        }
+
+        #ai-suggester .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        #ai-suggester label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        #ai-suggester input[type="text"],
+        #ai-suggester select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid var(--glass-border);
+            border-radius: 10px;
+            background: var(--glass-bg);
+            color: var(--white);
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+        #ai-suggester input[type="text"]::placeholder,
+        #ai-suggester select option {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        #ai-suggester input[type="text"]:focus,
+        #ai-suggester select:focus {
+            border-color: var(--white);
+        }
+
+        .suggestion-chip {
+            background-color: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            color: var(--white); /* Ensure text color is readable on glass */
+        }
+
+        .suggestion-chip:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            border-color: var(--white);
+        }
+
+        /* Reviews Section */
+        #reviews {
+            background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+            color: var(--white);
+            padding: 4rem 1rem;
+        }
+
+        #reviews .section-title {
+            color: var(--white);
+        }
+
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .review-card {
+            background-color: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: left;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        .review-text {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: var(--white);
+        }
+
+        .review-author {
+            font-weight: bold;
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .review-rating .fas {
+            color: gold;
+            margin-right: 0.2rem;
+        }
+
+        /* Contact Section */
+     #contact {
+            background-color: rgba(255, 255, 255, 0.05); /* Ligeramente más claro para contraste */
+            backdrop-filter: blur(5px);
+            padding-top: 6rem;
+            padding-bottom: 6rem;
+        }
+
+        #contact h2 {
+            color: var(--white);
+            margin-bottom: 3rem;
+        }
+
+        .contact-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .contact-info, .contact-form-container {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            flex: 1;
+            min-width: 300px;
+            max-width: 500px;
+        }
+
+        .contact-info h3 {
+            color: var(--white);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        .contact-info p, .contact-info ul li {
+            color: var(--white);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .contact-info ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .contact-info ul li {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .contact-info ul li i {
+            color: var(--accent-color);
+            margin-right: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .social-media {
+            margin-top: 2rem;
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .social-media a {
+            color: var(--white);
+            font-size: 2rem;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .social-media a:hover {
+            color: var(--accent-color);
+            transform: translateY(-5px);
+        }
+
+        .contact-form-container h3 {
+            color: var(--white);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        .contact-form label {
+            display: block;
+            color: var(--white);
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .contact-form input[type="text"],
+        .contact-form input[type="email"],
+        .contact-form textarea {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+            font-size: 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            box-sizing: border-box; /* Ensures padding doesn't affect width */
+        }
+
+        .contact-form input[type="text"]::placeholder,
+        .contact-form input[type="email"]::placeholder,
+        .contact-form textarea::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .contact-form input[type="text"]:focus,
+        .contact-form input[type="email"]:focus,
+        .contact-form textarea:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(240, 147, 251, 0.3); /* Accent color with transparency */
+            outline: none;
+        }
+
+        .contact-form textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .contact-form button[type="submit"] {
+            width: 100%;
+            padding: 1rem;
+            background-color: var(--accent-color);
+            color: var(--white);
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .contact-form button[type="submit"]:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        #contactMessageResult {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 8px;
+            font-weight: bold;
+            display: none; /* Hidden by default */
+        }
+
+
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
+            color: var(--white);
+            text-align: center;
+            padding: 2rem 1rem;
+            margin-top: auto; /* Pushes footer to the bottom */
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        footer p {
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Modals */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background: var(--white);
+            margin: 5% auto;
+            padding: 2rem;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+            color: var(--text-dark);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .close-button {
+            color: var(--text-light);
+            font-size: 1.8rem;
+            font-weight: bold;
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .modal h2 {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .modal .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .modal label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .modal input[type="text"],
+        .modal input[type="email"],
+        .modal input[type="password"],
+        .modal select,
+        .modal textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .modal button {
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .message-result {
+            margin-top: 1rem;
+            padding: 0.8rem;
+            border-radius: 8px;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .message-result[style*="green"] {
+            background-color: rgba(144, 238, 144, 0.2); /* Light green */
+            border: 1px solid lightgreen;
+        }
+
+        .message-result[style*="red"] {
+            background-color: rgba(255, 99, 71, 0.2); /* Light tomato */
+            border: 1px solid tomato;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+        .cart-item span {
+            flex: 1;
+        }
+        .cart-item button {
+            width: auto;
+            padding: 0.3rem 0.6rem;
+            margin-left: 0.5rem;
+            font-size: 0.9rem;
+            border-radius: 5px;
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        .cart-item button:hover {
+            background-color: var(--secondary-color);
+        }
+        .cart-item .remove-btn {
+            background-color: #ef4444;
+        }
+        .cart-item .remove-btn:hover {
+            background-color: #dc2626;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 1rem;
+        }
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .star-rating .fa-star {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #ccc; /* Default grey stars */
+            transition: color 0.2s ease;
+        }
+        .star-rating .fa-star.fas {
+            color: gold; /* Filled stars */
+        }
+
+ #popular-destinations {
+            padding: 6rem 1rem;
+            background-color: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(5px);
+            position: relative;
+            overflow: hidden; /* Important for hiding overflowing cards */
+        }
+#popular-destinations p span{
+color:var(--white) ;
+font-size: 30px;
+}
+#popular-destinations .destination-card-content p{
+    font-size:20px ;
+}
+        #popular-destinations h2 {
+            margin-bottom: 3rem;
+            color: var(--white);
+        }
+
+        .carousel-wrapper {
+            position: relative;
+            padding: 0 60px; /* Increased space for navigation buttons */
+        }
+
+        .carousel-container {
+            display: flex;
+            overflow-x: hidden; /* Hide scrollbar */
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch; /* For smoother scrolling on iOS */
+            gap: 2rem;
+            padding-bottom: 1rem; /* Space for potential scrollbar */
+            margin-bottom: -1rem; /* Adjust to hide scrollbar if visible on some browsers */
+        }
+
+        .destination-card {
+            flex: 0 0 320px; /* Fixed width for each card */
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            text-align: left;
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .destination-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .destination-card-image-wrapper {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .destination-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .discount-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: var(--accent-color);
+            color: var(--white);
+            padding: 0.4rem 0.8rem;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1.2;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .discount-badge .percentage {
+            font-size: 1.1rem;
+            margin-top: 2px;
+        }
+
+       #popular-destinations {
+            padding: 6rem 1rem;
+            background-color: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(5px);
+            position: relative;
+            overflow: hidden; /* Important for hiding overflowing cards */
+        }
+
+        #popular-destinations h2 {
+            margin-bottom: 3rem;
+            color: var(--white);
+        }
+
+        .carousel-wrapper {
+            position: relative;
+            padding: 0 60px; /* Increased space for navigation buttons */
+        }
+
+        .carousel-container {
+            display: flex;
+            overflow-x: hidden; /* Hide scrollbar */
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch; /* For smoother scrolling on iOS */
+            gap: 2rem;
+            padding-bottom: 1rem; /* Space for potential scrollbar */
+            margin-bottom: -1rem; /* Adjust to hide scrollbar if visible on some browsers */
+        }
+
+        .destination-card {
+            flex: 0 0 320px; /* Fixed width for each card */
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            text-align: left;
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .destination-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .destination-card-image-wrapper {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .destination-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .discount-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: var(--accent-color);
+            color: var(--white);
+            padding: 0.4rem 0.8rem;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1.2;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .discount-badge .percentage {
+            font-size: 1.1rem;
+            margin-top: 2px;
+        }
+
+        .destination-card-content {
+            padding: 1.5rem;
+            flex-grow: 1; /* Allows content to expand */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .destination-card h3 {
+            font-size: 1.7rem;
+            color: var(--white);
+            margin-bottom: 0.8rem;
+        }
+
+        .destination-card .price {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            margin-bottom: 0.8rem;
+        }
+
+        .destination-card p {
+            font-size: 0.95rem;
+            color: var(--white);
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+        }
+
+        .destination-card-actions {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: auto; /* Pushes buttons to the bottom */
+        }
+
+        .destination-card-actions .btn {
+            padding: 0.6rem 1rem;
+            font-size: 0.9rem;
+            flex-grow: 1;
+            text-align: center;
+        }
+
+        .destination-card-actions .btn.view-more {
+            background-color: var(--primary-color);
+            border-radius: 40px;
+        }
+         .destination-card-actions .btn.btn.add-to-cart {
+            background-color: var(--primary-color);
+            border-radius: 40px;
+            cursor: pointer;
+        }
+
+        .destination-card-actions .btn.view-more:hover {
+            background-color: var(--white);
+        }
+
+        .destination-card-actions .btn.add-to-cart {
+            background-color: var(--secondary-color);
+        }
+
+        .destination-card-actions .btn.add-to-cart:hover {
+            background-color: var(--white);
+            color: var(--secondary-color);
+        }
+
+
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 0.5rem; /* Adjusted padding to move buttons further from cards */
+            pointer-events: none; /* Allows clicks to pass through to elements below */
+        }
+
+        .carousel-nav button {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: var(--white);
+            border: none;
+            border-radius: 50px;
+            width: 50px; /* Slightly larger buttons */
+            height: 50px;
+            font-size: 1.8rem; /* Larger icon */
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            pointer-events: all; /* Re-enable clicks for buttons */
+        }
+
+        .carousel-nav button:hover {
+            background-color: var(--accent-color);
+            transform: scale(1.1);
+        }
+
+        .carousel-nav button:disabled {
+            opacity: 0.5;
+            cursor: pointer;
+        }
+
+
+        #why-choose-us {
+            background-color: var(--white);
+            color: var(--text-dark);
+            padding: 4rem 1rem;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .feature-item {
+            text-align: center;
+            padding: 1.5rem;
+            border-radius: 12px;
+            background-color: #f7fafc;
+            border: 1px solid #edf2f7;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+        .feature-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        .feature-item i {
+            font-size: 3.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .feature-item h3 {
+            font-size: 1.4rem;
+            color: var(--text-dark);
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-item p {
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+  .faq-section {
+            background-color: var(--white);
+            padding: 80px 0;
+        }
+#contact .container p{
+    font-size: 25px;
+    color: #ccc;
+}
+        .faq-item {
+            background: var(--light-gray);
+            border-radius: var(--border-radius-md);
+            margin-bottom: 20px;
+            overflow: hidden;
+            transition: background 0.3s ease;
+        }
+
+        .faq-item.active {
+            background: var(--white);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        }
+
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 25px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--dark-gray);
+            font-size: 1.1rem;
+        }
+
+        .faq-question i {
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            padding: 0 25px 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 200px; /* Suficiente para la mayoría de las respuestas */
+            padding-top: 10px;
+        }
+        #call-to-action {
+            background: linear-gradient(135deg, var(--secondary-color) 0%, var(--accent-color) 100%);
+            color: var(--white);
+            padding: 4rem 1rem;
+            text-align: center;
+        }
+
+        #call-to-action .section-title,
+        #call-to-action .section-subtitle {
+            color: var(--white);
+        }
+
+        #call-to-action .btn-primary {
+            margin-top: 2rem;
+            font-size: 1.2rem;
+            padding: 1rem 2.5rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--text-dark);
+            color: var(--white);
+            padding: 2.5rem 0;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .social-links a {
+            color: var(--white);
+            margin: 0 0.75rem;
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none; /* Hide nav links on small screens for simplicity */
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .products-grid, .reviews-grid, .popular-destinations-grid, .feature-grid {
+                grid-template-columns: 1fr; /* Single column layout */
+            }
+
+            .modal-content {
+                margin: 10% auto;
+                width: 95%;
+                padding: 1.5rem;
+            }
+
+            .product-card button {
+                width: calc(100% - 2rem); /* Adjust button width */
+                margin: 0 1rem 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+            .btn-primary, .btn-secondary {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.9rem;
+            }
+            .logo {
+                font-size: 1.5rem;
+            }
+            .auth-buttons {
+                gap: 0.5rem;
+            }
+            .auth-buttons .btn-primary, .auth-buttons .btn-secondary {
+                padding: 0.5rem 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <a href="#" class="logo"><i class="fas fa-plane"></i> Eiro</a>
+                <ul class="nav-links">
+                    <li><a href="viajes.html">Viajes</a></li>
+                    <li><a href="#popular-destinations">Destinos Populares</a></li>
+                    <li><a href="#ai-suggester">AI Suggester</a></li>
+                    <li><a href="#reviews">Reseñas</a></li>
+                    <li><a href="#why-choose-us">¿Por qué Eiro?</a></li>
+                    <li><a href="#contact">Contacto</a></li>
+                </ul>
+                <div class="auth-buttons" id="authButtons">
+                    <button class="btn-secondary" onclick="openModal('loginModal')">Iniciar Sesión</button>
+                    <button class="btn-primary" onclick="openModal('registerModal')">Registrarse</button>
+                </div>
+                <div class="user-account" id="userAccount">
+                    <button onclick="showCart()"><i class="fas fa-shopping-cart"></i> Carrito</button>
+                    <button onclick="handleLogout()"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="home" class="hero hero-home">
+            <video autoplay loop muted class="video-background" playsinline>
+                <source src="videoplayback.mp4" type="video/mp4">
+                Tu navegador no soporta el tag de video.
+            </video>
+            <div class="container">
+                <h1 class="hero-title">Tu próxima aventura comienza con Eiro.</h1>
+                <p class="hero-subtitle">Descubre experiencias de viaje únicas, personalizadas por nuestra IA para ti.</p>
+                <a href="viajes.html" class="btn-primary" style="margin-right: 1rem;">Explorar Viajes</a>
+                <a href="#ai-suggester" class="btn-secondary">Sugerencia con IA</a>
+            </div>
+        </section>
+
+     
+        <section id="ai-suggester" class="hero">
+            <div class="container">
+                <h2 class="section-title" style="color: var(--white);">Tu Viaje Ideal, Diseñado por IA</h2>
+                <p class="section-subtitle" style="color: rgba(255, 255, 255, 0.9);">Dinos qué buscas y nuestra inteligencia artificial creará la aventura perfecta para ti.</p>
+                <div class="ai-form-container">
+                    <div class="form-group">
+                        <label for="aiDestination">Destino (o 'cualquiera')</label>
+                        <input type="text" id="aiDestination" placeholder="Ej: París, Machu Picchu, Playas del Caribe...">
+                    </div>
+                    <div class="form-group">
+                        <label for="aiDuration">Duración</label>
+                        <select id="aiDuration" style="width: 100%; padding: 0.75rem; border: 2px solid var(--glass-border); border-radius: 10px; background: var(--glass-bg); color: var(--white);">
+                            <option value="1-3">1-3 días</option>
+                            <option value="4-7">4-7 días</option>
+                            <option value="8-14">1-2 semanas</option>
+                            <option value="15+">Más de 2 semanas</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Presupuesto aproximado (USD)</label>
+                        <select id="aiBudget" style="width: 100%; padding: 0.75rem; border: 2px solid var(--glass-border); border-radius: 10px; background: var(--glass-bg); color: var(--white);">
+                            <option value="0-500">$0 - $500</option>
+                            <option value="500-1500">$500 - $1,500</option>
+                            <option value="1500-3000">$1,500 - $3,000</option>
+                            <option value="3000+">$3,000+</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Tipo de experiencia</label>
+                        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem;">
+                            <span class="suggestion-chip" onclick="toggleInterest(this, 'aventura')" style="color: var(--white);">🏔️ Aventura</span>
+                            <span class="suggestion-chip" onclick="toggleInterest(this, 'cultura')" style="color: var(--white);">🏛️ Cultura</span>
+                            <span class="suggestion-chip" onclick="toggleInterest(this, 'relajacion')" style="color: var(--white);">🧘 Relajación</span>
+                            <span class="suggestion-chip" onclick="toggleInterest(this, 'gastronomia')" style="color: var(--white);">🍷 Gastronomía</span>
+                            <span class="suggestion-chip" onclick="toggleInterest(this, 'naturaleza')" style="color: var(--white);">🌳 Naturaleza</span>
+                            <span class="suggestion-chip" onclick="toggleInterest(this, 'urbano')" style="color: var(--white);">🏙️ Urbano</span>
+                            <span class="suggestion-chip" onclick="toggleInterest(this, 'familia')" style="color: var(--white);">👨‍👩‍👧‍👦 Familia</span>
+                            <span class="suggestion-chip" onclick="toggleInterest(this, 'amigos')" style="color: var(--white);">👯 Amigos</span>
+                            <span class="suggestion-chip" onclick="toggleInterest(this, 'solo')" style="color: var(--white);">🚶 Solo</span>
+                        </div>
+                        <input type="hidden" id="aiInterests" value=""> </div>
+                    <button type="button" class="btn-primary" onclick="generateAISuggestion()">Generar Sugerencia de IA</button>
+                    <div id="aiSuggestionResult" class="ai-result" style="display: none; margin-top: 1.5rem; padding: 1.5rem; background: var(--glass-bg); border-radius: 10px; border: 1px solid var(--glass-border);">
+                        <h3>Tu Viaje Sugerido por Eiro AI:</h3>
+                        <p id="aiSuggestionText" style="color: var(--white);"></p>
+                        <button class="btn-secondary" style="margin-top: 1rem; color: var(--primary-color); background-color: var(--white);" onclick="addAIToCart()">Añadir a mi carrito</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+   <section id="popular-destinations">
+            <div class="container">
+                <h2>Destinos Populares</h2>
+                <p><span>Explora algunos de nuestros destinos más buscados y planifica tu próxima escapada.</span></p>
+                <div class="carousel-wrapper">
+                    <div class="carousel-container" id="destinationCarousel">
+                        <div class="destination-card">
+                            <div class="destination-card-image-wrapper">
+                                <img src="imagenes/francia.jpg" alt="París, Francia">
+                                <div class="discount-badge">
+                                    <span>OFERTA</span>
+                                    <span class="percentage">15% OFF</span>
+                                </div>
+                            </div>
+                            <div class="destination-card-content">
+                                <h3>París, Francia</h3>
+                                <div class="price">$1200</div>
+                                <p>La ciudad del amor, con su icónica Torre Eiffel y museos de clase mundial.</p>
+                                <div class="destination-card-actions">
+                                    <a href="#" class="btn view-more">Ver Más</a>
+                                    <button class="btn add-to-cart">Añadir al Carrito</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="destination-card">
+                            <div class="destination-card-image-wrapper">
+                                <img src="imagenes/japon.jpg" alt="Tokio, Japón">
+                                <div class="discount-badge">
+                                    <span>OFERTA</span>
+                                    <span class="percentage">10% OFF</span>
+                                </div>
+                            </div>
+                            <div class="destination-card-content">
+                                <h3>Tokio, Japón</h3>
+                                <div class="price">$1800</div>
+                                <p>Una metrópolis vibrante que combina tradición y tecnología futurista.</p>
+                                <div class="destination-card-actions">
+                                    <a href="#" class="btn view-more">Ver Más</a>
+                                    <button class="btn add-to-cart">Añadir al Carrito</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="destination-card">
+                            <div class="destination-card-image-wrapper">
+                                <img src="imagenes/machu.jpg" alt="Machu Picchu, Perú">
+                                <div class="discount-badge">
+                                    <span>OFERTA</span>
+                                    <span class="percentage">20% OFF</span>
+                                </div>
+                            </div>
+                            <div class="destination-card-content">
+                                <h3>Machu Picchu, Perú</h3>
+                                <div class="price">$950</div>
+                                <p>Antigua ciudad inca, un impresionante sitio arqueológico en los Andes.</p>
+                                <div class="destination-card-actions">
+                                    <a href="#" class="btn view-more">Ver Más</a>
+                                    <button class="btn add-to-cart">Añadir al Carrito</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="destination-card">
+                            <div class="destination-card-image-wrapper">
+                                <img src="imagenes/barcelona.jpg" alt="Barcelona, España">
+                                <div class="discount-badge">
+                                    <span>OFERTA</span>
+                                    <span class="percentage">12% OFF</span>
+                                </div>
+                            </div>
+                            <div class="destination-card-content">
+                                <h3>Barcelona, España</h3>
+                                <div class="price">$1100</div>
+                                <p>Arquitectura modernista de Gaudí, playas y una vibrante vida nocturna.</p>
+                                <div class="destination-card-actions">
+                                    <a href="#" class="btn view-more">Ver Más</a>
+                                    <button class="btn add-to-cart">Añadir al Carrito</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="destination-card">
+                            <div class="destination-card-image-wrapper">
+                                <img src="imagenes/roma.jpg" alt="Roma, Italia">
+                                <div class="discount-badge">
+                                    <span>OFERTA</span>
+                                    <span class="percentage">18% OFF</span>
+                                </div>
+                            </div>
+                            <div class="destination-card-content">
+                                <h3>Roma, Italia</h3>
+                                <div class="price">$1350</div>
+                                <p>Historia antigua y sitios icónicos como el Coliseo y el Vaticano.</p>
+                                <div class="destination-card-actions">
+                                    <a href="#" class="btn view-more">Ver Más</a>
+                                    <button class="btn add-to-cart">Añadir al Carrito</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="destination-card">
+                            <div class="destination-card-image-wrapper">
+                                <img src="imagenes/new.jpeg" alt="Nueva York, EE.UU.">
+                                <div class="discount-badge">
+                                    <span>OFERTA</span>
+                                    <span class="percentage">10% OFF</span>
+                                </div>
+                            </div>
+                            <div class="destination-card-content">
+                                <h3>Nueva York, EE.UU.</h3>
+                                <div class="price">$1500</div>
+                                <p>La "Gran Manzana", Times Square, Central Park y una cultura diversa.</p>
+                                <div class="destination-card-actions">
+                                    <a href="#" class="btn view-more">Ver Más</a>
+                                    <button class="btn add-to-cart">Añadir al Carrito</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="destination-card">
+                            <div class="destination-card-image-wrapper">
+                                <img src="imagenes/asutra.jpeg" alt="Sídney, Australia">
+                                <div class="discount-badge">
+                                    <span>OFERTA</span>
+                                    <span class="percentage">25% OFF</span>
+                                </div>
+                            </div>
+                            <div class="destination-card-content">
+                                <h3>Sídney, Australia</h3>
+                                <div class="price">$2200</div>
+                                <p>Opera House, Puente del Puerto y playas famosas como Bondi.</p>
+                                <div class="destination-card-actions">
+                                    <a href="#" class="btn view-more">Ver Más</a>
+                                    <button class="btn add-to-cart">Añadir al Carrito</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="destination-card">
+                            <div class="destination-card-image-wrapper">
+                                <img src="imagenes/rio.webp" alt="Río de Janeiro, Brasil">
+                                <div class="discount-badge">
+                                    <span>OFERTA</span>
+                                    <span class="percentage">15% OFF</span>
+                                </div>
+                            </div>
+                            <div class="destination-card-content">
+                                <h3>Río de Janeiro, Brasil</h3>
+                                <div class="price">$1050</div>
+                                <p>Playas espectaculares, el Cristo Redentor y el vibrante Carnaval.</p>
+                                <div class="destination-card-actions">
+                                    <a href="#" class="btn view-more">Ver Más</a>
+                                    <button class="btn add-to-cart">Añadir al Carrito</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="destination-card">
+                            <div class="destination-card-image-wrapper">
+                                <img src="imagenes/dubai.jpg" alt="Dubái, EAU">
+                                <div class="discount-badge">
+                                    <span>OFERTA</span>
+                                    <span class="percentage">10% OFF</span>
+                                </div>
+                            </div>
+                            <div class="destination-card-content">
+                                <h3>Dubái, EAU</h3>
+                                <div class="price">$1700</div>
+                                <p>Lujo, arquitectura moderna, compras y experiencias únicas en el desierto.</p>
+                                <div class="destination-card-actions">
+                                    <a href="#" class="btn view-more">Ver Más</a>
+                                    <button class="btn add-to-cart">Añadir al Carrito</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="destination-card">
+                            <div class="destination-card-image-wrapper">
+                                <img src="imagenes/amsterda,.jpg" alt="Ámsterdam, Países Bajos">
+                                <div class="discount-badge">
+                                    <span>OFERTA</span>
+                                    <span class="percentage">20% OFF</span>
+                                </div>
+                            </div>
+                            <div class="destination-card-content">
+                                <h3>Ámsterdam, P. Bajos</h3>
+                                <div class="price">$980</div>
+                                <p>Canales pintorescos, arte y una cultura vibrante.</p>
+                                <div class="destination-card-actions">
+                                    <a href="#" class="btn view-more">Ver Más</a>
+                                    <button class="btn add-to-cart">Añadir al Carrito</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="destination-card">
+                            <div class="destination-card-image-wrapper">
+                                <img src="imagenes/londres.jpeg" alt="Londres, Reino Unido">
+                                <div class="discount-badge">
+                                    <span>OFERTA</span>
+                                    <span class="percentage">10% OFF</span>
+                                </div>
+                            </div>
+                            <div class="destination-card-content">
+                                <h3>Londres, R. Unido</h3>
+                                <div class="price">$1400</div>
+                                <p>Monumentos históricos, museos y una cultura moderna.</p>
+                                <div class="destination-card-actions">
+                                    <a href="#" class="btn view-more">Ver Más</a>
+                                    <button class="btn add-to-cart">Añadir al Carrito</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="destination-card">
+                            <div class="destination-card-image-wrapper">
+                                <img src="imagenes/japon.jpg" alt="Kioto, Japón">
+                                <div class="discount-badge">
+                                    <span>OFERTA</span>
+                                    <span class="percentage">15% OFF</span>
+                                </div>
+                            </div>
+                            <div class="destination-card-content">
+                                <h3>Kioto, Japón</h3>
+                                <div class="price">$1650</div>
+                                <p>Templos antiguos, jardines zen y la cultura tradicional japonesa.</p>
+                                <div class="destination-card-actions">
+                                    <a href="#" class="btn view-more">Ver Más</a>
+                                    <button class="btn add-to-cart">Añadir al Carrito</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-nav">
+                        <button id="carousel-prev"><i class="fas fa-chevron-left"></i></button>
+                        <button id="carousel-next"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="why-choose-us" class="hero">
+            <div class="container">
+                <h2 class="section-title">¿Por Qué Elegir Eiro?</h2>
+                <p class="section-subtitle">Ofrecemos más que solo viajes; creamos recuerdos inolvidables.</p>
+                <div class="feature-grid">
+                    <div class="feature-item">
+                        <i class="fas fa-robot"></i>
+                        <h3>Planificación Inteligente con IA</h3>
+                        <p>Nuestra avanzada inteligencia artificial personaliza viajes que se adaptan perfectamente a tus gustos y presupuesto.</p>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-globe-americas"></i>
+                        <h3>Destinos Exclusivos</h3>
+                        <p>Accede a itinerarios y experiencias que no encontrarás en ningún otro lugar, seleccionados por expertos.</p>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-headset"></i>
+                        <h3>Soporte 24/7</h3>
+                        <p>Estamos contigo en cada paso de tu aventura, con asistencia dedicada disponible a cualquier hora y en cualquier lugar.</p>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-hand-holding-usd"></i>
+                        <h3>Precios Transparentes</h3>
+                        <p>Sin costos ocultos. Obtén el mejor valor por tu dinero con cotizaciones claras y honestas.</p>
+                    </div>
+    
+                   
+                </div>
+            </div>
+        </section>
+
+        <section id="reviews" class="hero">
+            <div class="container">
+                <h2 class="section-title">Lo que dicen nuestros viajeros</h2>
+                <div class="reviews-grid">
+                    <div class="review-card">
+                        <p class="review-text">"Eiro hizo mi viaje a Japón una experiencia inolvidable. Cada detalle fue perfecto, desde el alojamiento hasta las actividades. ¡Totalmente recomendado!"</p>
+                        <div class="review-author">- Ana G., España</div>
+                        <div class="review-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <p class="review-text">"Nunca pensé que planificar un viaje sería tan fácil. La interfaz es súper intuitiva y las opciones personalizadas de Eiro AI son un game-changer."</p>
+                        <div class="review-author">- Carlos M., México</div>
+                        <div class="review-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <p class="review-text">"El soporte al cliente es increíble. Tuvimos un pequeño inconveniente y lo resolvieron en minutos. ¡Definitivamente mi agencia de viajes de ahora en adelante!"</p>
+                        <div class="review-author">- Sofía P., Argentina</div>
+                        <div class="review-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn-primary" style="margin-top: 3rem;" onclick="showReviewModal()">Escribir una Reseña</button>
+            </div>
+        </section>
+
+       <section id="faq" class="faq-section py-section">
+            <div class="container">
+                <h2 class="text-dark text-center">Preguntas Frecuentes</h2>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            ¿Cómo puedo reservar un viaje?
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Puedes reservar un viaje directamente desde nuestra página de "Paquetes de Viaje". Simplemente selecciona el paquete que te interese, añade la cantidad de personas y sigue los pasos para el pago.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            ¿Qué métodos de pago aceptan?
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Aceptamos diversas formas de pago, incluyendo tarjetas de crédito (Visa, Mastercard, Amex), PayPal y transferencias bancarias. Consulta con nuestro equipo si tienes alguna duda sobre métodos específicos.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            ¿Puedo personalizar un itinerario?
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>¡Sí, claro! Ofrecemos la posibilidad de personalizar muchos de nuestros itinerarios. Contáctanos con tus ideas y nuestro equipo de expertos en viajes diseñará una experiencia a tu medida.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            ¿Qué pasa si necesito cancelar mi viaje?
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Nuestra política de cancelación varía según el paquete y el proveedor. Te recomendamos revisar los términos y condiciones específicos de cada viaje. En caso de duda, contacta a nuestro equipo de soporte.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+     
+        <section id="contact">
+            <div class="container">
+                <h2>Contáctanos</h2>
+                <p>¿Listo para planificar tu próxima aventura? Envíanos un mensaje.</p>
+                <div class="contact-content">
+                    <div class="contact-info">
+                        <h3>Información de Contacto</h3>
+                        <ul>
+                            <li><i class="fas fa-map-marker-alt"></i> 123 Calle del Viajero, Ciudad Aventura, País</li>
+                            <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
+                            <li><i class="fas fa-envelope"></i> info@eirotravel.com</li>
+                            <li><i class="fas fa-clock"></i> Lunes - Viernes: 9:00 AM - 6:00 PM</li>
+                        </ul>
+                        <div class="social-media">
+                            <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+                    <div class="contact-form-container">
+                        <h3>Envíanos un Mensaje</h3>
+                        <form id="contactForm" class="contact-form">
+                            <label for="contactName">Nombre:</label>
+                            <input type="text" id="contactName" name="name" required placeholder="Tu Nombre">
+
+                            <label for="contactEmail">Email:</label>
+                            <input type="email" id="contactEmail" name="email" required placeholder="tu.email@ejemplo.com">
+
+                            <label for="contactMessage">Mensaje:</label>
+                            <textarea id="contactMessage" name="message" rows="5" required placeholder="Tu Mensaje"></textarea>
+
+                            <button type="submit">Enviar Mensaje</button>
+                            <div id="contactMessageResult"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Eiro. Todos los derechos reservados.</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal('registerModal')">&times;</span>
+            <h2>Regístrate en Eiro</h2>
+            <form id="registerForm" onsubmit="handleRegister(event)">
+                <div class="form-group">
+                    <label for="regUsername">Nombre de Usuario</label>
+                    <input type="text" id="regUsername" required>
+                </div>
+                <div class="form-group">
+                    <label for="regEmail">Email</label>
+                    <input type="email" id="regEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="regPassword">Contraseña</label>
+                    <input type="password" id="regPassword" required>
+                </div>
+                <button type="submit" class="btn-primary">Registrarse</button>
+                  <p class="modal-switch-text">¿Ya tienes cuenta? <a href="#" id="show-login">Iniciar Sesión</a></p>
+            </form>
+            <p id="registerMessage" class="message-result" style="margin-top: 1rem; text-align: center;"></p>
+        </div>
+    </div>
+
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal('loginModal')">&times;</span>
+            <h2>Inicia Sesión en Eiro</h2>
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="loginUsername">Nombre de Usuario</label>
+                    <input type="text" id="loginUsername" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Contraseña</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="btn-primary">Iniciar Sesión</button>
+                   <p class="modal-switch-text">¿No tienes cuenta? <a href="#" id="show-register">Regístrate</a></p>
+            </form>
+            <p id="loginMessage" class="message-result" style="margin-top: 1rem; text-align: center;"></p>
+        </div>
+    </div>
+
+    <div id="cartModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal('cartModal')">&times;</span>
+            <h2>Tu Carrito de Compras</h2>
+            <div id="cartItems">
+                <p id="emptyCartMessage">Tu carrito está vacío.</p>
+            </div>
+            <div class="cart-summary" style="margin-top: 1.5rem; text-align: right; font-size: 1.2rem; font-weight: bold;">
+                Total: <span id="cartTotal">$0.00</span>
+            </div>
+            <button class="btn-primary" style="width: 100%; margin-top: 1.5rem;" onclick="showCheckoutModal()">Proceder al Pago</button>
+        </div>
+    </div>
+
+    <div id="checkoutModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal('checkoutModal')">&times;</span>
+            <h2>Finalizar Compra</h2>
+            <form id="checkoutForm" onsubmit="handleCheckout(event)">
+                <h3>Detalles de Pago</h3>
+                <div class="form-group">
+                    <label for="paymentMethod">Método de Pago</label>
+                    <select id="paymentMethod" required>
+                        <option value="credit_card">Tarjeta de Crédito</option>
+                        <option value="paypal">PayPal</option>
+                        <option value="bank_transfer">Transferencia Bancaria</option>
+                        <option value="cash_on_delivery">Efectivo en Tienda</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="cardNumber">Número de Tarjeta</label>
+                    <input type="text" id="cardNumber" placeholder="**** **** **** ****" minlength="16" maxlength="16" pattern="[0-9]{16}" title="Solo 16 dígitos numéricos" disabled>
+                </div>
+                <div class="form-group form-row">
+                    <div style="flex: 1; margin-right: 1rem;">
+                        <label for="expiryDate">Fecha de Vencimiento</label>
+                        <input type="text" id="expiryDate" placeholder="MM/AA" pattern="(0[1-9]|1[0-2])\/[0-9]{2}" title="Formato MM/AA" disabled>
+                    </div>
+                    <div style="flex: 1;">
+                        <label for="cvv">CVV</label>
+                        <input type="text" id="cvv" placeholder="CVV" minlength="3" maxlength="4" pattern="[0-9]{3,4}" title="3 o 4 dígitos numéricos" disabled>
+                    </div>
+                </div>
+
+                <h3>Dirección de Envío (opcional, para documentos físicos/kits)</h3>
+                <div class="form-group">
+                    <label for="shippingAddress">Dirección</label>
+                    <input type="text" id="shippingAddress" placeholder="Calle, Número, Depto.">
+                </div>
+                <div class="form-group form-row">
+                    <div style="flex: 1; margin-right: 1rem;">
+                        <label for="shippingCity">Ciudad</label>
+                        <input type="text" id="shippingCity" placeholder="Ciudad">
+                    </div>
+                    <div style="flex: 1;">
+                        <label for="shippingZip">Código Postal</label>
+                        <input type="text" id="shippingZip" placeholder="C.P.">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="shippingCountry">País</label>
+                    <input type="text" id="shippingCountry" placeholder="País">
+                </div>
+
+                <button type="submit" class="btn-primary">Confirmar Pedido</button>
+            </form>
+            <p id="checkoutMessage" class="message-result" style="margin-top: 1rem; text-align: center;"></p>
+        </div>
+    </div>
+
+    <div id="reviewModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal('reviewModal')">&times;</span>
+            <h2>Escribir una Reseña</h2>
+            <form id="reviewForm" onsubmit="submitReview(event)">
+                <div class="form-group">
+                    <label for="reviewProduct">Producto (Viaje)</label>
+                    <select id="reviewProduct" required>
+                        <option value="">Selecciona un viaje</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="reviewRating">Calificación</label>
+                    <div class="star-rating" id="reviewRating">
+                        <i class="far fa-star" data-rating="1"></i>
+                        <i class="far fa-star" data-rating="2"></i>
+                        <i class="far fa-star" data-rating="3"></i>
+                        <i class="far fa-star" data-rating="4"></i>
+                        <i class="far fa-star" data-rating="5"></i>
+                    </div>
+                    <input type="hidden" id="selectedRating" value="0">
+                </div>
+                <div class="form-group">
+                    <label for="reviewComment">Comentario</label>
+                    <textarea id="reviewComment" rows="4" placeholder="Comparte tu experiencia..." required></textarea>
+                </div>
+                <button type="submit" class="btn-primary">Enviar Reseña</button>
+            </form>
+            <p id="reviewMessage" class="message-result" style="margin-top: 1rem; text-align: center;"></p>
+        </div>
+    </div>
+
+    <script>
+        // General Modal Functions
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        }
+ document.querySelectorAll('.faq-question').forEach(item => {
+            item.addEventListener('click', event => {
+                const faqItem = item.closest('.faq-item');
+                faqItem.classList.toggle('active');
+                const answer = faqItem.querySelector('.faq-answer');
+                if (faqItem.classList.contains('active')) {
+                    answer.style.maxHeight = answer.scrollHeight + "px";
+                    answer.style.paddingTop = "10px"; // Ensure padding is added when active
+                } else {
+                    answer.style.maxHeight = "0";
+                    answer.style.paddingTop = "0"; // Remove padding when inactive
+                }
+            });
+        });
+        // Auth Status
+        let isLoggedIn = false; // This should be updated based on session/token
+        let currentUserId = null; // Store user ID if logged in
+
+        // Function to check login status on page load
+        async function checkLoginStatus() {
+            try {
+                const response = await fetch('auth_middleware.php'); // A simple check to see if session is active
+                const data = await response.json();
+                if (data.success === false && data.message === 'Acceso denegado. Se requiere autenticación.') {
+                    isLoggedIn = false;
+                    currentUserId = null;
+                } else {
+                    // If auth_middleware doesn't exit, it means session is active.
+                    // This is a simplified check. In a real app, you might have a dedicated endpoint
+                    // to return user info if logged in.
+                    isLoggedIn = true;
+                    // Attempt to get user_id if session is active (e.g., from a 'get_user_info.php')
+                    // For now, we'll just assume a generic user is logged in.
+                    // A real app might fetch user_id like this:
+                    // const userInfoResponse = await fetch('get_user_info.php');
+                    // const userInfo = await userInfoResponse.json();
+                    // if (userInfo.success) { currentUserId = userInfo.user_id; }
+                }
+                updateAuthUI();
+                if (isLoggedIn) {
+                    fetchCartItems(); // Fetch cart items if user is logged in
+                }
+            } catch (error) {
+                console.error('Error checking login status:', error);
+                isLoggedIn = false;
+                currentUserId = null;
+                updateAuthUI();
+            }
+        }
+
+
+        function updateAuthUI() {
+            const authButtons = document.getElementById('authButtons');
+            const userAccount = document.getElementById('userAccount');
+            if (isLoggedIn) {
+                authButtons.style.display = 'none';
+                userAccount.style.display = 'flex'; // Use flex to show buttons side-by-side
+            } else {
+                authButtons.style.display = 'flex';
+                userAccount.style.display = 'none';
+            }
+        }
+
+        // Initial check for login status
+        document.addEventListener('DOMContentLoaded', () => {
+            checkLoginStatus();
+            fetchProducts(); // Also fetch products on load
+        });
+
+        // --- Auth Handlers (Register, Login, Logout) ---
+        async function handleRegister(event) {
+            event.preventDefault();
+            const username = document.getElementById('regUsername').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+            const messageElem = document.getElementById('registerMessage');
+
+            try {
+                const response = await fetch('register.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, email, password })
+                });
+                const data = await response.json();
+
+                messageElem.style.display = 'block';
+                if (data.success) {
+                    messageElem.style.color = 'green';
+                    messageElem.textContent = data.message;
+                    setTimeout(() => {
+                        closeModal('registerModal');
+                        openModal('loginModal'); // Prompt to login after successful registration
+                    }, 1500);
+                } else {
+                    messageElem.style.color = 'red';
+                    messageElem.textContent = data.message;
+                }
+            } catch (error) {
+                console.error('Error during registration:', error);
+                messageElem.style.display = 'block';
+                messageElem.style.color = 'red';
+                messageElem.textContent = 'Ocurrió un error inesperado. Intenta de nuevo.';
+            }
+        }
+
+        async function handleLogin(event) {
+            event.preventDefault();
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            const messageElem = document.getElementById('loginMessage');
+
+            try {
+                const response = await fetch('login.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+                const data = await response.json();
+
+                messageElem.style.display = 'block';
+                if (data.success) {
+                    messageElem.style.color = 'green';
+                    messageElem.textContent = data.message;
+                    isLoggedIn = true;
+                    // In a real app, you'd store the token (if using JWT) or rely on session cookies.
+                    // For PHP sessions, the browser handles the cookie.
+                    // The 'token' returned here is just session_id() for demonstration.
+                    // currentUserId = data.user_id; // Assuming user_id is returned by login.php
+                    updateAuthUI();
+                    closeModal('loginModal');
+                    fetchCartItems(); // Fetch cart items after successful login
+                } else {
+                    messageElem.style.color = 'red';
+                    messageElem.textContent = data.message;
+                }
+            } catch (error) {
+                console.error('Error during login:', error);
+                messageElem.style.display = 'block';
+                messageElem.style.color = 'red';
+                messageElem.textContent = 'Ocurrió un error inesperado. Intenta de nuevo.';
+            }
+        }
+
+        async function handleLogout() {
+            try {
+                const response = await fetch('logout.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    alert(data.message); // Or update a notification area
+                    isLoggedIn = false;
+                    currentUserId = null;
+                    updateAuthUI();
+                    // Clear cart display
+                    document.getElementById('cartItems').innerHTML = '<p id="emptyCartMessage">Tu carrito está vacío.</p>';
+                    document.getElementById('cartTotal').textContent = '$0.00';
+                } else {
+                    alert('Error al cerrar sesión: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error during logout:', error);
+                alert('Ocurrió un error al cerrar sesión.');
+            }
+        }
+
+        // --- Product Display (Nuestros Viajes) ---
+        async function fetchProducts() {
+            try {
+                const response = await fetch('products.php');
+                const data = await response.json();
+                const productsContainer = document.getElementById('productsContainer');
+                const reviewProductSelect = document.getElementById('reviewProduct');
+
+                if (data.success && data.products.length > 0) {
+                    productsContainer.innerHTML = ''; // Clear previous content
+                    reviewProductSelect.innerHTML = '<option value="">Selecciona un viaje</option>'; // Reset review options
+
+                    data.products.forEach(product => {
+                        const productCard = `
+                            <div class="product-card">
+                                <img src="${product.url_imagen || 'https://via.placeholder.com/400x300?text=Eiro+Travel'}" alt="${product.nombre}" class="product-image">
+                                <h3>${product.nombre}</h3>
+                                <p class="product-category">${product.categoria_nombre}</p>
+                                <p class="product-description">${product.descripcion.substring(0, 100)}...</p>
+                                <div class="product-details">
+                                    <span><i class="fas fa-calendar-alt"></i> ${product.duracion_dias} días</span>
+                                    <span><i class="fas fa-map-marker-alt"></i> ${product.ubicacion}</span>
+                                </div>
+                                <div class="product-price">$${parseFloat(product.precio).toFixed(2)}</div>
+                                <button class="btn-primary" onclick="addToCart(${product.id_producto}, '${product.nombre}', ${product.precio})">Añadir al Carrito</button>
+                            </div>
+                        `;
+                        productsContainer.innerHTML += productCard;
+
+                        // Add product to review select options
+                        const option = document.createElement('option');
+                        option.value = product.id_producto;
+                        option.textContent = product.nombre;
+                        reviewProductSelect.appendChild(option);
+                    });
+                } else {
+                    productsContainer.innerHTML = '<p style="color: var(--white);">No se encontraron viajes disponibles en este momento.</p>';
+                }
+            } catch (error) {
+                console.error('Error fetching products:', error);
+                document.getElementById('productsContainer').innerHTML = '<p style="color: var(--white);">Error al cargar los viajes.</p>';
+            }
+        }
+
+        // --- Cart Functions ---
+        async function fetchCartItems() {
+            if (!isLoggedIn) {
+                document.getElementById('emptyCartMessage').style.display = 'block';
+                document.getElementById('cartItems').innerHTML = ''; // Clear previous content
+                document.getElementById('cartTotal').textContent = '$0.00';
+                return;
+            }
+
+            try {
+                const response = await fetch('cart.php', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                const data = await response.json();
+                const cartItemsContainer = document.getElementById('cartItems');
+                const cartTotalElem = document.getElementById('cartTotal');
+
+                if (data.success && data.cart_items.length > 0) {
+                    cartItemsContainer.innerHTML = ''; // Clear "empty cart" message
+                    let total = 0;
+                    data.cart_items.forEach(item => {
+                        const itemElem = document.createElement('div');
+                        itemElem.classList.add('cart-item');
+                        itemElem.innerHTML = `
+                            <span>${item.cantidad} x ${item.nombre_producto}</span>
+                            <span>$${parseFloat(item.precio_al_agregar * item.cantidad).toFixed(2)}</span>
+                            <div>
+                                <button onclick="updateCartItemQuantity(${item.id_item_carrito}, ${item.cantidad - 1})" ${item.cantidad <= 1 ? 'disabled' : ''}>-</button>
+                                <button onclick="updateCartItemQuantity(${item.id_item_carrito}, ${item.cantidad + 1})">+</button>
+                                <button onclick="removeCartItem(${item.id_item_carrito})" class="remove-btn">X</button>
+                            </div>
+                        `;
+                        cartItemsContainer.appendChild(itemElem);
+                        total += item.precio_al_agregar * item.cantidad;
+                    });
+                    cartTotalElem.textContent = `$${total.toFixed(2)}`;
+                    document.getElementById('emptyCartMessage').style.display = 'none'; // Hide empty message
+                } else {
+                    cartItemsContainer.innerHTML = '<p id="emptyCartMessage">Tu carrito está vacío.</p>';
+                    cartTotalElem.textContent = '$0.00';
+                    document.getElementById('emptyCartMessage').style.display = 'block'; // Show empty message
+                }
+            } catch (error) {
+                console.error('Error fetching cart items:', error);
+                document.getElementById('cartItems').innerHTML = '<p>Error al cargar el carrito.</p>';
+                document.getElementById('cartTotal').textContent = '$0.00';
+            }
+        }
+
+        async function addToCart(productId, productName, productPrice) {
+            if (!isLoggedIn) {
+                alert('Debes iniciar sesión para añadir productos al carrito.');
+                openModal('loginModal');
+                return;
+            }
+
+            try {
+                const response = await fetch('cart.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ product_id: productId, quantity: 1, price_at_addition: productPrice })
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    alert(`"${productName}" añadido al carrito.`);
+                    fetchCartItems(); // Refresh cart display
+                } else {
+                    alert('Error al añadir al carrito: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error adding to cart:', error);
+                alert('Ocurrió un error al añadir al carrito.');
+            }
+        }
+
+        async function updateCartItemQuantity(itemId, newQuantity) {
+            if (newQuantity < 1) {
+                removeCartItem(itemId);
+                return;
+            }
+            try {
+                const response = await fetch('cart.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ action: 'update', item_id: itemId, quantity: newQuantity })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    fetchCartItems();
+                } else {
+                    alert('Error al actualizar cantidad: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error updating cart item quantity:', error);
+                alert('Ocurrió un error al actualizar la cantidad.');
+            }
+        }
+
+        async function removeCartItem(itemId) {
+            if (!confirm('¿Estás seguro de que quieres eliminar este artículo del carrito?')) {
+                return;
+            }
+            try {
+                const response = await fetch('cart.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ action: 'remove', item_id: itemId })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    fetchCartItems();
+                } else {
+                    alert('Error al eliminar del carrito: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error removing cart item:', error);
+                alert('Ocurrió un error al eliminar del carrito.');
+            }
+        }
+
+        function showCart() {
+            if (!isLoggedIn) {
+                alert('Debes iniciar sesión para ver tu carrito.');
+                openModal('loginModal');
+                return;
+            }
+            fetchCartItems();
+            openModal('cartModal');
+        }
+
+        function showCheckoutModal() {
+            closeModal('cartModal');
+            openModal('checkoutModal');
+            // Enable/disable card fields based on payment method
+            document.getElementById('paymentMethod').addEventListener('change', function() {
+                const isCard = this.value === 'credit_card';
+                document.getElementById('cardNumber').disabled = !isCard;
+                document.getElementById('expiryDate').disabled = !isCard;
+                document.getElementById('cvv').disabled = !isCard;
+            });
+            document.getElementById('paymentMethod').dispatchEvent(new Event('change')); // Initial state
+        }
+
+        // --- Checkout Handler ---
+        async function handleCheckout(event) {
+            event.preventDefault();
+            const paymentMethod = document.getElementById('paymentMethod').value;
+            const shippingAddress = document.getElementById('shippingAddress').value;
+            const shippingCity = document.getElementById('shippingCity').value;
+            const shippingZip = document.getElementById('shippingZip').value;
+            const shippingCountry = document.getElementById('shippingCountry').value;
+            const messageElem = document.getElementById('checkoutMessage');
+
+            // Basic client-side validation for card details if credit_card is selected
+            if (paymentMethod === 'credit_card') {
+                const cardNumber = document.getElementById('cardNumber').value;
+                const expiryDate = document.getElementById('expiryDate').value;
+                const cvv = document.getElementById('cvv').value;
+
+                if (!cardNumber || !expiryDate || !cvv) {
+                    messageElem.style.display = 'block';
+                    messageElem.style.color = 'red';
+                    messageElem.textContent = 'Por favor, completa todos los detalles de la tarjeta.';
+                    return;
+                }
+                // More robust validation (e.g., regex for formats, Luhn algorithm) would be here
+            }
+
+            try {
+                const response = await fetch('checkout.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        paymentMethod,
+                        shippingAddress: shippingAddress,
+                        shippingCity: shippingCity,
+                        shippingZip: shippingZip,
+                        shippingCountry: shippingCountry,
+                        // Add more payment details as needed (e.g., last 4 digits of card, expiry)
+                        // IMPORTANT: NEVER send full card details to your server for real payments.
+                        // Use a payment gateway (Stripe, PayPal) client-side SDKs.
+                    })
+                });
+                const data = await response.json();
+
+                messageElem.style.display = 'block';
+                if (data.success) {
+                    messageElem.style.color = 'green';
+                    messageElem.textContent = data.message + ` (Pedido ID: ${data.order_id})`;
+                    // Clear cart after successful checkout
+                    document.getElementById('cartItems').innerHTML = '<p id="emptyCartMessage">Tu carrito está vacío.</p>';
+                    document.getElementById('cartTotal').textContent = '$0.00';
+                    setTimeout(() => closeModal('checkoutModal'), 3000);
+                } else {
+                    messageElem.style.color = 'red';
+                    messageElem.textContent = data.message;
+                }
+            } catch (error) {
+                console.error('Error during checkout:', error);
+                messageElem.style.display = 'block';
+                messageElem.style.color = 'red';
+                messageElem.textContent = 'Ocurrió un error inesperado al procesar tu pedido.';
+            }
+        }
+
+
+        // --- AI Suggestion Feature ---
+        let selectedInterests = [];
+
+        function toggleInterest(chip, interest) {
+            const index = selectedInterests.indexOf(interest);
+            if (index > -1) {
+                // Remove if already selected
+                selectedInterests.splice(index, 1);
+                chip.style.backgroundColor = 'var(--glass-bg)'; // Reset background
+                chip.style.color = 'var(--white)'; // Reset text color
+            } else {
+                // Add if not selected
+                selectedInterests.push(interest);
+                chip.style.backgroundColor = 'var(--white)'; // Highlight
+                chip.style.color = 'var(--primary-color)'; // Highlight text
+            }
+            document.getElementById('aiInterests').value = selectedInterests.join(',');
+        }
+
+        async function generateAISuggestion() {
+            const destination = document.getElementById('aiDestination').value;
+            const duration = document.getElementById('aiDuration').value;
+            const budget = document.getElementById('aiBudget').value;
+            const interests = document.getElementById('aiInterests').value; // Comma-separated string
+
+            const aiSuggestionResult = document.getElementById('aiSuggestionResult');
+            const aiSuggestionText = document.getElementById('aiSuggestionText');
+
+            aiSuggestionResult.style.display = 'block';
+            aiSuggestionText.textContent = 'Generando tu sugerencia de viaje...';
+
+            try {
+                // In a real scenario, this would call a server-side endpoint (e.g., 'ai_suggest.php')
+                // that then interacts with a GenAI model.
+                // For demonstration, we'll use a mocked response.
+                const prompt = `Suggest a travel experience to ${destination || 'anywhere'} for ${duration}, with a budget of ${budget} USD, focusing on ${interests || 'varied interests'}.`;
+
+                const mockResponses = [
+                    "¡Increíble! Para tu viaje a **${destination}** de **${duration}**, con un presupuesto de **${budget}** y tus intereses en **${interests}**, te sugerimos un viaje de aventura por sus montañas, seguido de una inmersión cultural en sus pueblos históricos y una relajación total en sus spas naturales. ¡Perfecto para explorar y recargar energías!",
+                    "Considerando tus preferencias, te recomendamos un viaje de ${duration} a ${destination} centrado en el descubrimiento culinario y la vida nocturna. Podrás disfrutar de talleres de cocina local y vibrantes mercados, todo dentro de tu presupuesto de ${budget}. ¡Ideal para paladares aventureros!",
+                    "Para una experiencia única en ${destination} con un presupuesto de ${budget} y una duración de ${duration}, ¿qué tal una ruta de senderismo por parques nacionales, combinada con visitas a sitios arqueológicos? Esto satisfará tu deseo de aventura y cultura, mientras disfrutas de la naturaleza."
+                ];
+                const randomIndex = Math.floor(Math.random() * mockResponses.length);
+                const suggestedText = mockResponses[randomIndex]
+                    .replace('${destination}', destination || 'un destino asombroso')
+                    .replace('${duration}', duration)
+                    .replace('${budget}', budget)
+                    .replace('${interests}', interests || 'intereses variados');
+
+
+                setTimeout(() => {
+                    aiSuggestionText.innerHTML = suggestedText; // Use innerHTML for bolding
+                }, 2000); // Simulate network delay
+            } catch (error) {
+                console.error('Error generating AI suggestion:', error);
+                aiSuggestionText.textContent = 'Lo sentimos, no pudimos generar una sugerencia en este momento. Intenta de nuevo más tarde.';
+            }
+        }
+
+        function addAIToCart() {
+            // This function would typically take the AI-generated suggestion and try to find/create
+            // a corresponding "product" in your database to add to the cart.
+            // For a simple demo, we can just alert or simulate adding a generic "AI Suggested Trip".
+            if (!isLoggedIn) {
+                alert('Debes iniciar sesión para añadir viajes a tu carrito.');
+                openModal('loginModal');
+                return;
+            }
+            alert('¡El viaje sugerido por Eiro AI ha sido añadido a tu carrito! (Simulado)');
+            // In a real app, you'd make an API call to create a custom cart item or find a matching product
+            // Example: addToCart(PRODUCT_ID_FOR_AI_TRIP, 'Viaje Personalizado por IA', 2500);
+            fetchCartItems(); // Refresh cart to show the new item (even if simulated)
+        }
+
+        // --- Review System ---
+        function showReviewModal() {
+            if (!isLoggedIn) {
+                alert('Debes iniciar sesión para escribir una reseña.');
+                openModal('loginModal');
+                return;
+            }
+            openModal('reviewModal');
+        }
+
+        // Star rating functionality
+        const starRatingContainer = document.getElementById('reviewRating');
+        let currentRating = 0;
+
+        starRatingContainer.addEventListener('mouseover', (e) => {
+            if (e.target.classList.contains('fa-star')) {
+                const rating = parseInt(e.target.dataset.rating);
+                Array.from(starRatingContainer.children).forEach(star => {
+                    const starRating = parseInt(star.dataset.rating);
+                    if (starRating <= rating) {
+                        star.classList.remove('far');
+                        star.classList.add('fas');
+                    } else {
+                        star.classList.remove('fas');
+                        star.classList.add('far');
+                    }
+                });
+            }
+        });
+
+        starRatingContainer.addEventListener('mouseout', () => {
+            Array.from(starRatingContainer.children).forEach(star => {
+                const starRating = parseInt(star.dataset.rating);
+                if (starRating <= currentRating) {
+                    star.classList.remove('far');
+                    star.classList.add('fas');
+                } else {
+                    star.classList.remove('fas');
+                    star.classList.add('far');
+                }
+            });
+        });
+
+        starRatingContainer.addEventListener('click', (e) => {
+            if (e.target.classList.contains('fa-star')) {
+                currentRating = parseInt(e.target.dataset.rating);
+                document.getElementById('selectedRating').value = currentRating;
+                // Visually update stars to reflect committed rating
+                Array.from(starRatingContainer.children).forEach(star => {
+                    const starRating = parseInt(star.dataset.rating);
+                    if (starRating <= currentRating) {
+                        star.classList.remove('far');
+                        star.classList.add('fas');
+                    } else {
+                        star.classList.remove('fas');
+                        star.classList.add('far');
+                    }
+                });
+            }
+        });
+
+        async function submitReview(event) {
+            event.preventDefault();
+            const productId = document.getElementById('reviewProduct').value;
+            const rating = document.getElementById('selectedRating').value;
+            const comment = document.getElementById('reviewComment').value;
+            const messageElem = document.getElementById('reviewMessage');
+
+            if (rating === '0') {
+                messageElem.style.display = 'block';
+                messageElem.style.color = 'red';
+                messageElem.textContent = 'Por favor, selecciona una calificación.';
+                return;
+            }
+            if (!productId) {
+                messageElem.style.display = 'block';
+                messageElem.style.color = 'red';
+                messageElem.textContent = 'Por favor, selecciona un producto.';
+                return;
+            }
+
+            try {
+                // In a real application, you would send this to a 'submit_review.php' endpoint
+                const response = await fetch('submit_review.php', { // This file needs to be created
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ product_id: productId, rating: parseInt(rating), comment: comment })
+                });
+                const data = await response.json();
+
+                messageElem.style.display = 'block';
+                if (data.success) {
+                    messageElem.style.color = 'green';
+                    messageElem.textContent = data.message;
+                    document.getElementById('reviewForm').reset(); // Clear form
+                    currentRating = 0; // Reset stars
+                    Array.from(starRatingContainer.children).forEach(star => {
+                        star.classList.remove('fas');
+                        star.classList.add('far');
+                    });
+                    setTimeout(() => closeModal('reviewModal'), 2000);
+                    // Optionally, refresh reviews section or product details
+                } else {
+                    messageElem.style.color = 'red';
+                    messageElem.textContent = data.message;
+                }
+            } catch (error) {
+                console.error('Error submitting review:', error);
+                messageElem.style.display = 'block';
+                messageElem.style.color = 'red';
+                messageElem.textContent = 'Ocurrió un error al enviar tu reseña. Intenta de nuevo.';
+            }
+        }
+
+
+        // --- Contact Form ---
+        async function handleContactFormSubmit(event) {
+            event.preventDefault();
+            const name = document.getElementById('contactName').value;
+            const email = document.getElementById('contactEmail').value;
+            const message = document.getElementById('contactMessage').value;
+            const messageElem = document.getElementById('contactMessageResult');
+
+            try {
+                // In a real application, you would send this to a 'contact.php' endpoint
+                const response = await fetch('contact.php', { // This file needs to be created
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name, email, message })
+                });
+                const data = await response.json();
+
+                messageElem.style.display = 'block';
+                if (data.success) {
+                    messageElem.style.color = 'green';
+                    messageElem.textContent = data.message;
+                    document.getElementById('contactForm').reset(); // Clear form
+                } else {
+                    messageElem.style.color = 'red';
+                    messageElem.textContent = data.message;
+                }
+            } catch (error) {
+                console.error('Error submitting contact form:', error);
+                messageElem.style.display = 'block';
+                messageElem.style.color = 'red';
+                messageElem.textContent = 'Ocurrió un error al enviar tu mensaje. Intenta de nuevo.';
+            }
+        }
+         // JavaScript for the Popular Destinations Carousel
+        const carousel = document.getElementById('destinationCarousel');
+        const prevButton = document.getElementById('carousel-prev');
+        const nextButton = document.getElementById('carousel-next');
+
+        const scrollAmount = 350; // Adjust based on card width + gap (e.g., 320px card + 2rem gap = ~352px)
+
+        nextButton.addEventListener('click', () => {
+            carousel.scrollBy({
+                left: scrollAmount,
+                behavior: 'smooth'
+            });
+        });
+
+        prevButton.addEventListener('click', () => {
+            carousel.scrollBy({
+                left: -scrollAmount,
+                behavior: 'smooth'
+            });
+        });
+
+        // Optional: Disable buttons when at start/end (more complex with dynamic content)
+        // For simplicity, I'm not implementing full disable logic here as it requires
+        // observing scroll position and content width, which can be verbose for a direct injection.
+        // A more robust solution would involve Intersection Observer or recalculating on resize.
+
+        // Example of simple check (might not be perfect for all scenarios)
+        carousel.addEventListener('scroll', () => {
+            // Check if scrolled to the end
+            const isAtEnd = carousel.scrollLeft + carousel.clientWidth >= carousel.scrollWidth - 1; // -1 for minor floating point inaccuracies
+            nextButton.disabled = isAtEnd;
+
+            // Check if scrolled to the beginning
+            const isAtBeginning = carousel.scrollLeft <= 0;
+            prevButton.disabled = isAtBeginning;
+        });
+
+    </script>
+</body>
+</html>
